@@ -68,8 +68,7 @@ Overview:
 10. Change the assignee for pull-requests for automatic dependency updates by editing `renovate.json`
     + currently defaults to @gciatto
 
-11. Add your PyPI credentials as secrets of the GitHub repository
-    - `PYPI_USERNAME` (resp. `PYPI_PASSWORD`) for your username (resp. password)
+11. Add your `PYPI_TOKEN` token as secrets of the GitHub repository
     - this may require you to register on PyPi first
     - Note: PyPI no longer allows authentication with a username and password. Please follow these steps instead:
         1. Authenticate on PyPi
@@ -97,11 +96,33 @@ Overview:
     poetry install
     ```
 
-### Run unit tests
+### Run Tests
+  Execute the test suite using `pytest`:
+  ```bash
+  poetry run poe test
+  ```
 
-```bash
-poetry run poe test
-```
+### Run Tests with Coverage
+  Execute the test suite with coverage reporting:
+  ```bash
+  poetry run poe coverage
+  ```
+  and generate a report with `poe coverage-report` or `poe coverage-html`
+
+
+### Run Static Checks
+  Perform static code analysis using both `mypy` and `ruff`:
+  ```bash
+  poetry run poe static-checks
+  ```
+
+### Format Code
+  Format your code using `ruff`:
+  ```bash
+  poetry run poe format
+  ```
+
+> Note: you can enter a Poetry shell via `poetry shell` to avoid prefixing commands with `poetry run`.
 
 > Tests are automatically run in CI, on all pushes on all branches.
 > There, tests are executed on multiple OS (Win, Mac, Ubuntu) and on multiple Python versions.
@@ -110,12 +131,7 @@ poetry run poe test
 
 This will execute the `__main__.py` file in the `my_project` package:
 ```bash
-python -m my_project
-```
-
-or alternatively:
-```bash
-my_project
+poetry run python -m my_project
 ```
 
 the latter is possible because of the script defined in the `pyproject.toml` file.

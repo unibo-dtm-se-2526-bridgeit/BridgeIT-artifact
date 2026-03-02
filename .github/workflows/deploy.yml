@@ -14,7 +14,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0 # all history
 
@@ -42,7 +42,7 @@ jobs:
       - name: Restore Development Environment
         run: poetry install
 
-      # Uncomment to change default logging level during release
+      # Uncomment to change default logging level during release
       # - name: Change default logging level
       #   run: sed -i -e 's/logging.DEBUG/logging.WARN/g' **/*/__init__.py
 
@@ -58,10 +58,9 @@ jobs:
         shell: bash
         run: |
           npm install
-          npx semantic-release --branches `git branch --show-current`
+          npx semantic-release
         env:
-          PYPI_USERNAME: ${{ secrets.PYPI_USERNAME }}
-          PYPI_PASSWORD: ${{ secrets.PYPI_PASSWORD }}
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
           GITHUB_TOKEN: ${{ secrets.RELEASE_TOKEN }}
           RELEASE_TEST_PYPI: ${{ github.event.repository.is_template || contains(github.repository, 'template') }}
           # dry run if not on main/master branch, or if initial commit

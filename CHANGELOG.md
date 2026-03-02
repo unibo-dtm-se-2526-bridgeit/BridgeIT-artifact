@@ -1,3 +1,81 @@
+## [2.4.1](https://github.com/aequitas-aod/template-python-project-poetry/compare/2.4.0...2.4.1) (2025-12-19)
+
+### Dependency updates
+
+* **deps:** update dependency mypy to v1.19.1 ([#130](https://github.com/aequitas-aod/template-python-project-poetry/issues/130)) ([0f98e57](https://github.com/aequitas-aod/template-python-project-poetry/commit/0f98e5718e54dec894dff74a7e0578a6ff22111c))
+* **deps:** update dependency ruff to v0.14.10 ([#131](https://github.com/aequitas-aod/template-python-project-poetry/issues/131)) ([07befd5](https://github.com/aequitas-aod/template-python-project-poetry/commit/07befd503668474f87b70ee19496fcd5c654cbd8))
+* **deps:** update dependency ruff to v0.14.9 ([#128](https://github.com/aequitas-aod/template-python-project-poetry/issues/128)) ([f433dac](https://github.com/aequitas-aod/template-python-project-poetry/commit/f433dac716942f342ea5f4439fa27723e4d10d7f))
+* **deps:** update node.js to 24.12 ([#126](https://github.com/aequitas-aod/template-python-project-poetry/issues/126)) ([f5569e1](https://github.com/aequitas-aod/template-python-project-poetry/commit/f5569e17b89bb5bedaa9fb1443cf5d3979bbf2bd))
+
+### Bug Fixes
+
+* update README and trigger release ([edc3b83](https://github.com/aequitas-aod/template-python-project-poetry/commit/edc3b83d3075a0b28064fdbca5cdadd81a0bd012))
+* update testpypi repository ([a7ad894](https://github.com/aequitas-aod/template-python-project-poetry/commit/a7ad89490c9ee884571797ec163a52f0dbcbfa4d))
+
+### Build and continuous integration
+
+* **deps:** update actions/upload-artifact action to v6 ([#129](https://github.com/aequitas-aod/template-python-project-poetry/issues/129)) ([ad910a0](https://github.com/aequitas-aod/template-python-project-poetry/commit/ad910a01c325d72a28837028acec8f0b61e55489))
+
+### General maintenance
+
+* rename also project name in pyproject.toml ([caaf2c4](https://github.com/aequitas-aod/template-python-project-poetry/commit/caaf2c40784258f2a5c3498df922f0e0863b5268))
+* update lock file ([df88518](https://github.com/aequitas-aod/template-python-project-poetry/commit/df88518fa403ffe72be3133e8494b52e15107594))
+* update README ([6ab1904](https://github.com/aequitas-aod/template-python-project-poetry/commit/6ab1904041c1cee4c53ec22d0e7815ab67c4fe81))
+* update README, remove poetry script ([473886a](https://github.com/aequitas-aod/template-python-project-poetry/commit/473886a11a4bfa233054764b104848356ac2e6ec))
+
+### Refactoring
+
+* **ci:** change pypi credentials with token ([cf9d36c](https://github.com/aequitas-aod/template-python-project-poetry/commit/cf9d36c2af7952a4b2922846de7f270d0e472279))
+
+## [2.4.0](https://github.com/aequitas-aod/template-python-project-poetry/compare/2.3.1...2.4.0) (2025-12-10)
+
+### Features
+
+* add ruff for formatting and static checking ([c81c5db](https://github.com/aequitas-aod/template-python-project-poetry/commit/c81c5dbd0705701fe732fefaed87fac13f9a32bb))
+* remove the need for release token in deploy ([e04cc4f](https://github.com/aequitas-aod/template-python-project-poetry/commit/e04cc4f19d23503773b6f389fac479c43b21a515))
+* update poetry ([e0927d4](https://github.com/aequitas-aod/template-python-project-poetry/commit/e0927d47da111b00a4c24e3d3e7e2842d8d53173))
+* update renovate config ([cff7985](https://github.com/aequitas-aod/template-python-project-poetry/commit/cff7985fd4f6fc6e3e60faf509fdb8d7069b8e7b))
+
+### Dependency updates
+
+* **deps:** update dependency coverage to v7.6.12 ([#94](https://github.com/aequitas-aod/template-python-project-poetry/issues/94)) ([8a685c3](https://github.com/aequitas-aod/template-python-project-poetry/commit/8a685c39475c7a326f3279ac2b4e2b42db36184f))
+* **deps:** update dependency mypy to v1.19.0 ([#123](https://github.com/aequitas-aod/template-python-project-poetry/issues/123)) ([04274c1](https://github.com/aequitas-aod/template-python-project-poetry/commit/04274c102f13bc1ae4ab3e6ea04b9efa6862545d))
+* **deps:** update dependency poethepoet to ^0.37.0 ([#91](https://github.com/aequitas-aod/template-python-project-poetry/issues/91)) ([da1203c](https://github.com/aequitas-aod/template-python-project-poetry/commit/da1203cc30881a683fc1ff1f7704e7c3409deba5))
+* **deps:** update dependency poetry to v1.8.5 ([#95](https://github.com/aequitas-aod/template-python-project-poetry/issues/95)) ([3753438](https://github.com/aequitas-aod/template-python-project-poetry/commit/37534380d65f5eaa8c6bdd891a5ec9022c3ee180))
+* **deps:** update dependency pytest to v8.3.5 ([#99](https://github.com/aequitas-aod/template-python-project-poetry/issues/99)) ([f8efc33](https://github.com/aequitas-aod/template-python-project-poetry/commit/f8efc33d5e99e7715d2db1caba12ce4afc038c5f))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.148 ([#89](https://github.com/aequitas-aod/template-python-project-poetry/issues/89)) ([100f92e](https://github.com/aequitas-aod/template-python-project-poetry/commit/100f92e0ebfe777842eb4671706063c4b884285d))
+* **deps:** update dependency semantic-release-preconfigured-conventional-commits to v1.1.157 ([#117](https://github.com/aequitas-aod/template-python-project-poetry/issues/117)) ([7f9f7f3](https://github.com/aequitas-aod/template-python-project-poetry/commit/7f9f7f318c5e976969058bbf3c4f5b48f97bb753))
+* **deps:** update node.js to 22.21 ([#107](https://github.com/aequitas-aod/template-python-project-poetry/issues/107)) ([c538958](https://github.com/aequitas-aod/template-python-project-poetry/commit/c5389581a71236662007e48957d9a7a36224466b))
+* **deps:** update node.js to v24 ([#119](https://github.com/aequitas-aod/template-python-project-poetry/issues/119)) ([36e1d22](https://github.com/aequitas-aod/template-python-project-poetry/commit/36e1d226acd1c003e01f1b44f3a8588e28e6f65e))
+
+### Bug Fixes
+
+* **ci:** remove branch option from semantic release command ([7a6dc99](https://github.com/aequitas-aod/template-python-project-poetry/commit/7a6dc99c778cc95f2cc97e65140b9494b15d1499))
+* dry-run release if secrets are unset ([4b2f887](https://github.com/aequitas-aod/template-python-project-poetry/commit/4b2f8871d0f1815ccfe91593ee4cf6cecb36f3be))
+* permissions in deploy job ([220f351](https://github.com/aequitas-aod/template-python-project-poetry/commit/220f351498cb339eda6870be17a333bdb4290bcd))
+* restore GITHUB_TOKEN in ci for deployment ([f942dbd](https://github.com/aequitas-aod/template-python-project-poetry/commit/f942dbdc89a42fd69538c711f36143a42d5db380))
+* typo in init script ([97f89f3](https://github.com/aequitas-aod/template-python-project-poetry/commit/97f89f3d0798d3659952bfe4b7b81ee62abf35f6))
+
+### Build and continuous integration
+
+* **deps:** update actions/checkout action to v5 ([4aa5fc1](https://github.com/aequitas-aod/template-python-project-poetry/commit/4aa5fc10dd356155c59feb24beda48727bcae30e))
+* **deps:** update actions/checkout action to v6 ([#121](https://github.com/aequitas-aod/template-python-project-poetry/issues/121)) ([f9ff32a](https://github.com/aequitas-aod/template-python-project-poetry/commit/f9ff32aac2dea524346523e882af70da80102284))
+* **deps:** update actions/setup-node action to v5 ([#112](https://github.com/aequitas-aod/template-python-project-poetry/issues/112)) ([0b5b5b9](https://github.com/aequitas-aod/template-python-project-poetry/commit/0b5b5b94de2d6a76b2cfa4805acbf9128ca2f87b))
+* **deps:** update actions/setup-node action to v6 ([#114](https://github.com/aequitas-aod/template-python-project-poetry/issues/114)) ([dd06cf1](https://github.com/aequitas-aod/template-python-project-poetry/commit/dd06cf18f02859b1edf67d1ae4807cb431e63411))
+* **deps:** update actions/setup-python action to v6 ([#113](https://github.com/aequitas-aod/template-python-project-poetry/issues/113)) ([964d1d8](https://github.com/aequitas-aod/template-python-project-poetry/commit/964d1d8dd202f24c2dfbc8f5eac97d19285b60c4))
+* **deps:** update actions/upload-artifact action to v5 ([#120](https://github.com/aequitas-aod/template-python-project-poetry/issues/120)) ([88a11fc](https://github.com/aequitas-aod/template-python-project-poetry/commit/88a11fcf7cb349df930cdbb9184d3a944f243185))
+
+### General maintenance
+
+* add .gitattributes ([341e4e2](https://github.com/aequitas-aod/template-python-project-poetry/commit/341e4e20a081961387f3734fbc2f4246549e1af3))
+* explain renovate in README.md ([2fef3b6](https://github.com/aequitas-aod/template-python-project-poetry/commit/2fef3b6e7cb3041e009462a365714b596ffadfeb))
+* **release:** 2.4.0 [skip ci] ([6addcb7](https://github.com/aequitas-aod/template-python-project-poetry/commit/6addcb775fcfb3db5de5dcd3db326007acb5bf05)), closes [#94](https://github.com/aequitas-aod/template-python-project-poetry/issues/94) [#95](https://github.com/aequitas-aod/template-python-project-poetry/issues/95) [#99](https://github.com/aequitas-aod/template-python-project-poetry/issues/99) [#89](https://github.com/aequitas-aod/template-python-project-poetry/issues/89)
+* update readme to mention init.yml ([8a2eedc](https://github.com/aequitas-aod/template-python-project-poetry/commit/8a2eedc5cec09c0b1f622dc5cb5a938394df92b9))
+
+### Refactoring
+
+* replace unittest with pytest ([07bfff4](https://github.com/aequitas-aod/template-python-project-poetry/commit/07bfff44fb937ac416558376f0b1d81ac30814a6))
+
 ## [2.4.0](https://github.com/aequitas-aod/template-python-project-poetry/compare/2.3.1...2.4.0) (2025-10-19)
 
 ### Features
