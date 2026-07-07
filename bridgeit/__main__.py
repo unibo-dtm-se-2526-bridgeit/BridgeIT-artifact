@@ -1,0 +1,3 @@
+import bridgeit
+
+bridgeit.main()
