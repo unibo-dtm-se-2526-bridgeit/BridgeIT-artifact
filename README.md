@@ -1,167 +1,89 @@
-# Python project template
+# BridgeIT
 
-A simple template of Python projects, with a rigid file structure, and predisposition for unit testing and release on PyPi.
+![Status](https://img.shields.io/badge/status-architecture%20%26%20setup%20phase-yellow)
+![Python](https://img.shields.io/badge/python-3.11%2B-blue)
+![License](https://img.shields.io/badge/license-Apache%202.0-lightgrey)
 
-## Relevant features
+> AI-Supported Requirements Engineering Platform — Software Engineering project, University of Bologna.
 
-- All your project code into a single main package (`bridgeit/`)
-- All your project tests into a single test package (`test/`)
-- Unit testing support via [`unittest`](https://docs.python.org/3/library/unittest.html)
-- Automatic testing on all branches via GitHub Actions
-- Semi-automatic versioning via Git
-- Packaging support via [`setuptools`](https://setuptools.pypa.io/en/latest/setuptools.html)
-- Automatic release on [PyPi](https://pypi.org/) via GitHub Actions and [`semantic-release`](https://semantic-release.gitbook.io)
-- Automatic dependencies updates via [Renovate](https://docs.renovatebot.com/)
+## Project Overview
 
-## Project structure
+BridgeIT is a **Requirements Engineering platform** that helps business stakeholders and software engineers transform natural-language requirements into structured software artifacts, while preserving complete traceability between a requirement and everything derived from it.
 
-Overview:
+Requirements Engineering is one of the most critical and error-prone disciplines in software development: requirements originate as informal, ambiguous natural-language statements, and translating that informal intent into structured, unambiguous, traceable engineering artifacts is a well-documented source of project failure. BridgeIT uses Artificial Intelligence to assist this translation — flagging ambiguity, proposing structure, and suggesting revisions — but AI in BridgeIT never decides autonomously. Every AI-generated suggestion is a proposal that requires explicit human validation before it can affect the authoritative state of a requirement.
+
+This distinction is what separates BridgeIT from a generic AI chatbot: BridgeIT is built around an explicit domain model, a defined workflow, and an architecture that keeps every AI-assisted suggestion reviewable, attributable, and traceable to its origin.
+
+The platform is designed around four cardinal engineering principles:
+
+- **Domain-Driven Design (DDD)** — an explicit domain model (Requirement, Artifact, AI Analysis, Traceability Link) expressed in terms meaningful to the Requirements Engineering domain, not to any particular storage or delivery technology.
+- **Hexagonal Architecture (Ports and Adapters)** — the domain and application logic are isolated from external technical concerns (web framework, persistence, AI provider) behind explicit ports, so the domain remains independently testable and technology-agnostic.
+- **SOLID principles**, most notably the **Dependency Inversion Principle** — dependencies always point inward, toward the domain; adapters depend on abstractions defined by the layers they serve, never the reverse.
+- **AI isolated through an AI Gateway** — access to the AI provider (the Gemini API) is mediated entirely through a dedicated gateway abstraction invoked by the application layer, so the domain has no dependency on any AI provider, and the provider itself remains replaceable in principle.
+
+## Current Status
+
+**BridgeIT is currently in its Architecture & Design Setup Phase.** Only project initialization has been completed to date. No domain logic, application services, infrastructure adapters, or AI integration have been implemented yet.
+
+**Completed:**
+- Repository initialization from the official Poetry project template.
+- Poetry project configuration.
+- Renaming of the project package to `bridgeit`.
+- Automated testing environment set up with Pytest.
+- Static analysis configuration with Ruff and Mypy.
+- Git versioning established through GitHub.
+
+**Not yet implemented:**
+- Domain model (Requirements Engineering core concepts).
+- AI integration (Gemini API and AI Gateway abstraction).
+- APIs (FastAPI service layer and endpoints).
+- Persistence layer.
+- CI/CD pipeline.
+- Frontend.
+
+The full, up-to-date status is maintained in [`docs/report.md`](./docs/report.md#current-development-status) and is expected to evolve incrementally, milestone by milestone, alongside this README.
+
+## Architecture & Documentation
+
+Full project documentation lives under [`docs/`](./docs). Each document has a distinct, non-overlapping scope:
+
+| Document | Summary |
+|---|---|
+| [**Report**](./docs/report.md) | Project vision, problem statement, functional and non-functional requirements, user stories, workflow, methodology, roadmap, and current development status. |
+| [**Architecture**](./docs/architecture.md) | The Hexagonal Architecture layering (driving adapters → application layer → domain / AI Gateway → driven adapters), the dependency rules that govern it, the AI Gateway's isolation from the domain, the proposed package structure, and the illustrative API design. |
+| [**Domain Model**](./docs/domain-model.md) | The Domain-Driven Design model: entities (Requirement, Artifact, AI Analysis, Traceability Link), value objects, domain rules, the Requirement aggregate root and the invariants it protects, and the project's ubiquitous language. |
+
+All three documents are kept consistent with one another and are updated incrementally as the project progresses, following the same Conventional Commits discipline used for the codebase.
+
+## Development Setup
+
+BridgeIT is built in Python and managed with [Poetry](https://python-poetry.org/).
+
 ```bash
-<root directory>
-├── bridgeit/             # main package (should be named after your project)
-│   ├── __init__.py         # python package marker
-│   └── __main__.py         # application entry point
-├── tests/                  # test package (should contain unit tests)
-├── .github/                # configuration of GitHub CI
-│   └── workflows/          # configuration of GitHub Workflows
-│       ├── check.yml       # runs tests on multiple OS and versions of Python
-│       └── deploy.yml      # if check succeeds, and the current branch is one of {main, master}, triggers automatic releas on PyPi
-├── LICENSE                 # license file (Apache 2.0 by default)
-├── pyproject.toml          # project configuration file as prescribed by Poetry
-├── renovate.json           # configuration of Renovate bot, for automatic dependency updates
-├── requirements.txt        # only declares a dependency on Poetry. DO NOT EDIT THIS FILE
-└── release.config.js       # script to release on PyPi, and GitHub via semantic-release
+# Clone the repository
+git clone <repository-url>
+cd bridgeit
+
+# Install dependencies (creates/uses the project's virtual environment)
+poetry install
 ```
 
-## TODO-list for template usage
+Once dependencies are installed, the application (once implemented) is intended to run as a **FastAPI** service. Instructions for running the API server will be added here once the corresponding milestone (see [`docs/report.md` — Roadmap](./docs/report.md#roadmap)) is implemented.
 
-1. Use this template to create a new GitHub repository, say `bridgeit`
-    - this name will also be used to identify the package on PyPi
-        + so, we suggest choosing a name which has not been used on PyPi, yet
-        + we also suggest choosing a name which is a valid Python package name (i.e. `using_snake_case`)
+## Quality Assurance
 
-2. Clone the `bridgeit` repository
+Project tasks are run through [`poe`](https://github.com/nat-n/poethepoet) (Poe the Poet), configured as the project's task runner on top of Poetry.
 
-3. Open a shell into your local `bridgeit` directory and run
-    ```bash
-    ./rename-template.sh bridgeit
-    ```
-    
-    This will coherently rename the template's project name with the one chosen by you (i.e. `bridgeit`, in this example)
-
-    * __Remark__: this step is now automatic thanks to the `init.yml` workflow which is triggered when using this template to create a new repository
-
-4. Commit & push
-
-5. Ensure you like the [Apache 2.0 License](https://www.apache.org/licenses/LICENSE-2.0.html). If you don't, change the content of the `LICENSE` file
-
-6. Ensure the versions-range of Python reported in `pyproject.toml` fits the versions you want to support
-    + currently defaults to `>= 3.9`
-    + if you change this, please also change the versions of Python tests should be run on in CI, by looking the file `.github/workflows/check.yml`
-
-7. Check the Python version and OS tests should be run on in CI, by looking the file `.github/workflows/check.yml`
-
-8. Add your runtime, development, and build dependencies to `pyproject.toml`
-
-9. Check the other metadata in `pyproject.toml`
-
-10. Change the assignee for pull-requests for automatic dependency updates by editing `renovate.json`
-    + currently defaults to @gciatto
-
-11. Add your `PYPI_TOKEN` token as secrets of the GitHub repository
-    - this may require you to register on PyPi first
-    - Note: PyPI no longer allows authentication with a username and password. Please follow these steps instead:
-        1. Authenticate on PyPi
-        2. Go to your account settings and generate a new API token
-        3. Add the API Token to the `PYPI_PASSWORD` secret
-        4. Add the string `__token__` to the `PYPI_USERNAME` secret
-
-12. Generate a GitHub token and add it as a secret of the GitHub repository, named `RELEASE_TOKEN`
-    - cf. <https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic>
-    - the token must allow pushing to the repository
-
-13. Put your main (resp. test) code in `bridgeit/` (resp. `test/`)
-
-## How to do stuff
-
-### Restore dev dependencies
-
-1. Install Poetry if you don't have it yet
-    ```bash
-    pip install -r requirements.txt
-    ```
-
-2. Install the project's dependencies
-    ```bash
-    poetry install
-    ```
-
-### Run Tests
-  Execute the test suite using `pytest`:
-  ```bash
-  poetry run poe test
-  ```
-
-### Run Tests with Coverage
-  Execute the test suite with coverage reporting:
-  ```bash
-  poetry run poe coverage
-  ```
-  and generate a report with `poe coverage-report` or `poe coverage-html`
-
-
-### Run Static Checks
-  Perform static code analysis using both `mypy` and `ruff`:
-  ```bash
-  poetry run poe static-checks
-  ```
-
-### Format Code
-  Format your code using `ruff`:
-  ```bash
-  poetry run poe format
-  ```
-
-> Note: you can enter a Poetry shell via `poetry shell` to avoid prefixing commands with `poetry run`.
-
-> Tests are automatically run in CI, on all pushes on all branches.
-> There, tests are executed on multiple OS (Win, Mac, Ubuntu) and on multiple Python versions.
-
-### Run your code as an application
-
-This will execute the `__main__.py` file in the `bridgeit` package:
 ```bash
-poetry run python -m bridgeit
+# Run the automated test suite (Pytest)
+poetry run poe test
+
+# Run static analysis (Ruff for linting, Mypy for type checking)
+poetry run poe static-checks
 ```
 
-the latter is possible because of the script defined in the `pyproject.toml` file.
+Both commands are expected to be run locally before every commit, and will later be wired into the project's Continuous Integration pipeline (see [`docs/report.md` — Continuous Integration and Continuous Delivery](./docs/report.md#continuous-integration-and-continuous-delivery)).
 
-### Release a new version on PyPi
+## License
 
-New versions are automatically released on PyPi via GitHub Actions, when a push is made on the `main` or `master` branch.
-
-The version number is updated automatically by the `semantic-release` tool, which uses the commit messages to infer the type of the release (major, minor, patch).
-
-It is paramount that the commit messages follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification,
-in order for `semantic-release` to compute version numbers correctly.
-
-## Automatic updates of dependencies (via Renovate)
-
-The project is configured to use [Renovate](https://docs.renovatebot.com/) to automatically open pull-requests
-to update dependencies declared in `pyproject.toml`.
-
-By default, Renovate will assign such pull-requests to the user who created the repository from this template.
-
-If the project has tests (which is the case for this template), Renovate will only merge such pull-requests
-if all tests pass.
-
-When some test fails, Renovate will leave a comment on the pull-request, so that you can fix the issue manually.
-
-To make Renovate work, you need to enable it for your repository.
-To do so, please follow the instruction at <https://docs.renovatebot.com/getting-started/installing-onboarding/#hosted-githubcom-app>
-
-Finally, please remember to enable PR auto-merging in your repository settings, otherwise Renovate will not be able to merge
-the pull-requests it opens, even if all tests pass.
-To do so, please follow the instructions available [here](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/configuring-pull-request-merges/managing-auto-merge-for-pull-requests-in-your-repository#managing-auto-merge).
-
-> Notice that the combination between Renovate, and Semantic Release may lead to a number of releases being created automatically.
+This project is licensed under the **Apache License 2.0** (see [`docs/report.md` — License](./docs/report.md#license) for details on the current licensing status).
