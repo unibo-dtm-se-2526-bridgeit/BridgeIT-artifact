@@ -2,15 +2,17 @@
 
 ## Project Vision
 
-**Requirements Engineering** remains one of the most critical and error-prone disciplines in software development. Requirements originate as informal, natural-language statements produced by business stakeholders who reason in terms of goals, needs, and expectations, rather than in terms of formal, verifiable specifications. The translation of this informal intent into structured, unambiguous, and traceable engineering artifacts is a well-documented source of software project failure: a substantial share of defects and rework in software projects can be traced back to requirements that were incomplete, ambiguous, or misunderstood at the point of hand-off between business and engineering.
+Requirements Engineering remains one of the most critical and error-prone disciplines in software development. Requirements originate as informal, natural-language statements produced by business stakeholders who reason in terms of goals, needs, and expectations rather than formal, verifiable specifications. The translation of this informal intent into structured, unambiguous, and traceable engineering artifacts is widely recognized as a major source of software project failure: a substantial proportion of defects and costly rework can be traced back to requirements that were incomplete, ambiguous, or misunderstood at the point of hand-off between business and engineering.
 
-**Ambiguity** is at the core of this difficulty. Natural language is inherently imprecise: the same sentence can be interpreted differently by different readers, critical details are frequently omitted because they are "obvious" to the person who wrote them, and requirements often mix multiple concerns (business rules, expectations, constraints) within a single unstructured statement. When ambiguity is not resolved early, it propagates silently through design, implementation, and testing, surfacing late as defects, rework, or delivered features that do not match stakeholder intent. The cost of correcting a requirements-related error grows substantially the later it is discovered, a principle well established in Software Engineering literature.
+Artificial Intelligence, and Large Language Models in particular, can help mitigate this problem: by reading unstructured text, flagging ambiguity or incompleteness, and proposing more structured representations — without replacing the judgment of requirements engineers and business analysts, who remain responsible for final interpretation and validation.
 
-**Artificial Intelligence**, and Large Language Models in particular, offer a concrete opportunity to mitigate this problem, not by replacing the discipline of Requirements Engineering, but by augmenting it. AI models are capable of reading unstructured natural-language text, identifying candidate requirements within it, evaluating textual qualities such as ambiguity or incompleteness, and assisting in the translation of informal statements into more structured representations. Applied with appropriate boundaries, AI does not need to replace the judgment of requirements engineers and business analysts; it can act as a consistent, scalable assistant that surfaces issues and proposes structure, while final interpretation and validation remain a human responsibility.
+BridgeIT is built on this distinction. Unlike a general-purpose AI chatbot, which offers no persistent structure and no accountability for what it produces, BridgeIT is a **Requirements Engineering platform** with an explicit domain model, a defined workflow, and an architecture that keeps every AI-assisted suggestion reviewable, attributable, and traceable to its origin. Its purpose is to help business stakeholders and software engineers turn natural-language requirements into structured, traceable software artifacts, with AI as a means to that end, not the end itself.
 
-This distinction is central to BridgeIT's design and is what separates it from a generic AI chatbot. A chatbot is an open-ended conversational interface with no guaranteed structure, no persistent domain model, and no accountability for the artifacts it produces.
+---
 
-BridgeIT, by contrast, is conceived as a **Requirements Engineering platform**: a system with an explicit domain model, a defined workflow, and an architecture designed to guarantee that every AI-assisted suggestion is reviewable, attributable, and traceable to its origin. BridgeIT exists to help business stakeholders and software engineers transform natural-language requirements into structured software artifacts, while preserving complete traceability between the original requirement and every artifact derived from it. The presence of AI within BridgeIT is a means to this end, not the end itself.
+## Academic Context
+
+BridgeIT is developed as a Software Engineering project for the University of Bologna. Beyond its function as a Requirements Engineering platform, the project is intended to demonstrate practical command of principles central to the course: Domain-Driven Design, Hexagonal Architecture, automated testing practices, and Continuous Integration/Continuous Delivery. Its documentation and architecture are structured so that each of these principles can be directly inspected and evaluated as the implementation progresses, rather than only described in the abstract.
 
 ---
 
@@ -30,6 +32,18 @@ BridgeIT is designed as a direct response to these four problems: it provides a 
 
 ---
 
+## Domain Terminology
+
+The terms below are used consistently throughout this report. They are defined here briefly, for readability; their full treatment as domain concepts (entities, value objects, and the reasoning behind each) is maintained in [domain-model.md](domain-model.md#ubiquitous-language).
+
+- **Requirement** — A single unit of business or system intent, originally expressed in natural language, tracked through its lifecycle from submission to validation.
+- **AI Analysis** — The outcome of an AI-assisted evaluation of a Requirement's text, including a Quality Indication and, where applicable, a suggested revision. It is always a proposal, never an automatic change.
+- **Derived Artifact** — A structured, engineering-facing object (for example, a backlog item) created from a validated Requirement, retaining an explicit reference back to it. Referred to as "Artifact" in the domain model.
+- **Traceability Link** — An explicit, inspectable relationship connecting a Requirement to a Derived Artifact or another object derived from it.
+- **Quality Indication** — A non-binding assessment of a Requirement's clarity, completeness, and freedom from ambiguity, produced by an AI Analysis, intended to guide — not replace — human judgment about whether a Requirement is ready for validation.
+
+---
+
 ## Project Objectives
 
 ### Functional Requirements
@@ -39,56 +53,56 @@ BridgeIT is designed as a direct response to these four problems: it provides a 
 *Description:* The system shall allow a stakeholder to submit a requirement expressed in natural language and have it represented as a structured, persistent artifact within the platform.
 
 *Acceptance Criteria:*
-- A requirement can be submitted with, at minimum, a natural-language description.
-- The submitted requirement is stored and can be retrieved later without loss of content.
+- Given a non-empty natural-language description, when it is submitted, then the system stores it as a Requirement with a unique identifier and an initial status.
+- Given a previously submitted Requirement, when it is retrieved by its identifier, then its stored text is returned unchanged.
 
 **FR-02 AI-Assisted Requirement Analysis**
 
 *Description:* The system shall use the AI Gateway to analyze a submitted requirement's text and identify potential quality issues, such as ambiguity or incompleteness.
 
 *Acceptance Criteria:*
-- An analysis can be triggered for a given requirement.
-- The analysis produces a result that is associated with the requirement and does not modify it automatically.
+- Given a Requirement eligible for analysis, when an analysis is requested, then the system produces an AI Analysis associated with that Requirement's identifier.
+- Given an AI Analysis has been produced, when the Requirement is subsequently retrieved, then its stored text and status are unchanged from before the analysis.
 
 **FR-03 Requirement Clarification**
 
 *Description:* The system shall allow a stakeholder to revise a requirement's wording in response to issues identified during AI-assisted analysis.
 
 *Acceptance Criteria:*
-- A requirement's text can be edited after an analysis has been performed.
-- The relationship between the original submission and its revised version remains identifiable.
+- Given a Requirement that has been analyzed, when its text is revised, then the Requirement keeps the same identifier while its stored text is updated.
+- Given a revised Requirement, when its history is inspected, then the relationship between the original submission and the revision remains identifiable.
 
 **FR-04 Requirement Quality Evaluation**
 
-*Description:* The system shall produce a quality indication for a requirement, based on defined criteria, to help stakeholders judge its readiness for validation.
+*Description:* The system shall produce a Quality Indication for a requirement, based on defined criteria, to help stakeholders judge its readiness for validation.
 
 *Acceptance Criteria:*
-- A quality indication can be retrieved for a given requirement.
-- The quality indication is presented as guidance, not as an automatic accept/reject gate.
+- Given a Requirement that has been analyzed, when its Quality Indication is requested, then a result distinguishing at least "ready for validation" from "needs clarification" is returned.
+- Given a Quality Indication has been produced, when the Requirement's status is checked, then the status has not changed as a direct, automatic result of that indication.
 
 **FR-05 Human Validation of AI Suggestions**
 
 *Description:* The system shall require an explicit human decision (approve, edit, or reject) before any AI-generated suggestion affects the authoritative state of a requirement.
 
 *Acceptance Criteria:*
-- No AI-generated suggestion is applied to a requirement without an explicit human action.
-- The human decision made on a suggestion is recorded and attributable.
+- Given an AI Analysis awaiting review, when no human decision has been recorded, then the Requirement's authoritative state remains unaffected by that analysis.
+- Given a human reviewer approves, edits, or rejects an AI Analysis, when the decision is recorded, then it includes a reference to who made it and is retrievable together with the Requirement.
 
 **FR-06 Traceability Link Management**
 
 *Description:* The system shall allow the creation and inspection of traceability links between a requirement and the artifacts derived from it.
 
 *Acceptance Criteria:*
-- A traceability link can be created between a requirement and a derived artifact.
-- All traceability links for a given requirement can be retrieved and inspected.
+- Given a Requirement and a Derived Artifact, when a Traceability Link is created between them, then the link is retrievable by querying either the Requirement or the Artifact.
+- Given a Requirement with one or more Traceability Links, when those links are requested, then all of them are returned.
 
 **FR-07 Derived Artifact Creation**
 
 *Description:* The system shall allow a validated requirement to be used as the basis for creating a derived, structured artifact (e.g., a backlog item), while preserving its link to the source requirement.
 
 *Acceptance Criteria:*
-- A derived artifact can be created from a validated requirement.
-- The derived artifact retains a traceable reference to its originating requirement.
+- Given a Requirement whose status is "Validated," when a Derived Artifact is created from it, then the Artifact retains an explicit, retrievable reference to that Requirement.
+- Given a Requirement whose status is not "Validated," when creation of a Derived Artifact from it is attempted, then no Artifact is created.
 
 ### Non-Functional Requirements
 
@@ -104,53 +118,13 @@ BridgeIT is designed as a direct response to these four problems: it provides a 
 
 **NFR-06 Extensibility** — The domain and application layers shall be designed so that new requirement-derived artifact types or additional AI-assisted capabilities can be introduced without restructuring existing modules.
 
----
+**NFR-07 Reliability** — The system shall ensure that failures originating in an external dependency (e.g., AI provider unavailability) do not corrupt or lose previously stored Requirement data.
 
-## User Stories
+**NFR-08 Error Handling** — The system shall handle failures in external dependencies gracefully, surfacing a clear, actionable indication rather than an unhandled failure, and without leaving a Requirement in an inconsistent state.
 
-The user stories below translate the functional requirements into concrete usage scenarios, expressed from the perspective of the platform's primary actors (see [Stakeholders](#stakeholders)). Each story is linked to the functional requirement(s) it operationalizes.
+**NFR-09 Configuration Management** — Environment-specific settings (e.g., AI provider credentials, persistence configuration) shall be externalized from the codebase and managed through configuration mechanisms appropriate to each environment, consistent with NFR-05 (Security).
 
-**US-01 — Submitting a requirement** *(→ FR-01)*
-> As a **Business Stakeholder**,
-> I want to submit a requirement in natural language,
-> So that my intent is captured as a structured artifact I can later review.
-
-*Acceptance Criteria:* The stakeholder can submit free-text content and later retrieve it unchanged as a stored requirement.
-
-**US-02 — Requesting AI-assisted analysis** *(→ FR-02, FR-03)*
-> As a **Requirements Engineer**,
-> I want the platform to analyze a requirement for ambiguity or incompleteness,
-> So that I can identify and resolve issues before the requirement is validated.
-
-*Acceptance Criteria:* An analysis can be requested for any stored requirement, and its result is visible alongside the requirement's current text, without altering it.
-
-**US-03 — Reviewing requirement quality** *(→ FR-04)*
-> As a **Requirements Engineer**,
-> I want to see a quality indication for a requirement,
-> So that I can decide whether it needs further clarification before proceeding.
-
-*Acceptance Criteria:* A quality indication is retrievable for a requirement and clearly distinguishable from a final approval status.
-
-**US-04 — Validating an AI suggestion** *(→ FR-05)*
-> As a **Business Stakeholder or Requirements Engineer**,
-> I want to explicitly approve, edit, or reject any AI-generated suggestion,
-> So that no interpretation of my requirement becomes authoritative without my consent.
-
-*Acceptance Criteria:* Every AI suggestion presented to a user offers an explicit approve/edit/reject action, and the resulting decision is recorded.
-
-**US-05 — Inspecting traceability** *(→ FR-06)*
-> As a **Software Engineer**,
-> I want to inspect which artifacts are linked to a given requirement,
-> So that I can understand the origin and justification of the artifacts I am implementing.
-
-*Acceptance Criteria:* For any requirement, the set of linked derived artifacts can be listed and inspected.
-
-**US-06 — Creating a derived artifact** *(→ FR-07)*
-> As a **Software Engineer**,
-> I want to create a derived artifact from a validated requirement,
-> So that I can begin implementation work with a clear, traceable link back to its source.
-
-*Acceptance Criteria:* A derived artifact created from a requirement is persisted together with an explicit reference to that requirement.
+**NFR-10 Observability and Logging** — The system shall produce sufficient logging of significant domain events (e.g., an analysis requested, a validation decision recorded) to support debugging and future monitoring, without logging sensitive content in plaintext.
 
 ---
 
@@ -189,6 +163,68 @@ The user stories below translate the functional requirements into concrete usage
 
 ---
 
+## User Stories
+
+The user stories below translate the functional requirements into concrete usage scenarios, expressed from the perspective of the platform's primary actors (see [Stakeholders](#stakeholders)). Each story is linked to the functional requirement(s) it operationalizes, with one exception (US-08) that addresses the project's documentation process rather than a product feature.
+
+**US-01 — Submitting a requirement** *(→ FR-01)*
+> As a **Business Stakeholder**,
+> I want to submit a requirement in natural language,
+> So that my intent is captured as a structured artifact I can later review.
+
+*Acceptance Criteria:* The stakeholder can submit free-text content and later retrieve it unchanged as a stored requirement.
+
+**US-02 — Requesting AI-assisted analysis** *(→ FR-02)*
+> As a **Requirements Engineer**,
+> I want the platform to analyze a requirement for ambiguity or incompleteness,
+> So that I can identify issues before the requirement is validated.
+
+*Acceptance Criteria:* An analysis can be requested for any stored requirement, and its result is visible alongside the requirement's current text, without altering it.
+
+**US-03 — Clarifying a requirement after analysis** *(→ FR-03)*
+> As a **Business Stakeholder or Requirements Engineer**,
+> I want to revise a requirement's wording after an analysis has surfaced an issue,
+> So that the requirement can be improved before it is validated.
+
+*Acceptance Criteria:* A requirement's text can be revised after it has been analyzed, the requirement keeps the same identifier, and the relationship between the original submission and the revision remains identifiable.
+
+**US-04 — Reviewing requirement quality** *(→ FR-04)*
+> As a **Requirements Engineer**,
+> I want to see a quality indication for a requirement,
+> So that I can decide whether it needs further clarification before proceeding.
+
+*Acceptance Criteria:* A quality indication is retrievable for a requirement and clearly distinguishable from a final approval status.
+
+**US-05 — Validating an AI suggestion** *(→ FR-05)*
+> As a **Business Stakeholder or Requirements Engineer**,
+> I want to explicitly approve, edit, or reject any AI-generated suggestion,
+> So that no interpretation of my requirement becomes authoritative without my consent.
+
+*Acceptance Criteria:* Every AI suggestion presented to a user offers an explicit approve/edit/reject action, and the resulting decision is recorded.
+
+**US-06 — Inspecting traceability** *(→ FR-06)*
+> As a **Software Engineer**,
+> I want to inspect which artifacts are linked to a given requirement,
+> So that I can understand the origin and justification of the artifacts I am implementing.
+
+*Acceptance Criteria:* For any requirement, the set of linked derived artifacts can be listed and inspected.
+
+**US-07 — Creating a derived artifact** *(→ FR-07)*
+> As a **Software Engineer**,
+> I want to create a derived artifact from a validated requirement,
+> So that I can begin implementation work with a clear, traceable link back to its source.
+
+*Acceptance Criteria:* A derived artifact created from a requirement is persisted together with an explicit reference to that requirement.
+
+**US-08 — Tracing project documentation and design evolution** *(→ Development Methodology, Version Control Convention)*
+> As a **Course Instructor / Academic Evaluator**,
+> I want to trace how BridgeIT's documentation and architectural decisions evolved over time,
+> So that I can evaluate the project's engineering discipline, not only its current state.
+
+*Acceptance Criteria:* Changes to architecture and domain-model documentation are traceable through Git history following the project's Conventional Commits convention, so that the project's evolution can be reviewed independently of its final form.
+
+---
+
 ## Requirements Engineering Workflow
 
 BridgeIT is designed around an explicit, human-governed workflow. This section describes the workflow that the platform is intended to support; it is a description of expected behavior, not a record of implemented functionality (see [Current Development Status](#current-development-status)).
@@ -201,93 +237,17 @@ BridgeIT is designed around an explicit, human-governed workflow. This section d
 6. **Traceability generation** — Once validated, the requirement is linked to any artifacts derived from it, establishing a traceable relationship that can later be inspected. *(FR-06)*
 7. **Creation of derived artifacts** — Structured artifacts (e.g., backlog items) are created from the validated requirement, always retaining their trace back to the originating requirement. *(FR-07)*
 
-**A central principle governs every step of this workflow: AI-generated output is always a suggestion.** No step in this workflow allows an AI output to become authoritative project data without explicit human approval. This is consistent with, and governed by, the platform's [AI Philosophy](#ai-philosophy).
+Every step above that involves an AI-generated output is governed by the same underlying principle, detailed in [AI Philosophy](#ai-philosophy): AI output is always a proposal, never an authoritative change.
 
 ---
 
-## High-Level Architecture
+## Architecture
 
-BridgeIT's architecture is planned around a small set of well-established architectural principles, described here at a conceptual level. No implementation classes are included at this stage; the architecture will be documented in greater depth as it is actually implemented.
+BridgeIT's architecture follows Hexagonal Architecture (Ports and Adapters) and Domain-Driven Design, with a dedicated AI Gateway abstraction isolating the domain from any specific AI provider. To avoid duplicating architectural content across documents, the full architectural description — including the layering diagram, the AI Architecture explanation, and the illustrative API design — is maintained as a single authoritative reference in **[architecture.md](architecture.md)**.
 
-- **Hexagonal Architecture (Ports and Adapters)** — The core application logic will be isolated from external technical concerns (web framework, database, AI provider) behind explicit ports, with adapters implementing those ports for specific technologies. This ensures the domain can be tested and reasoned about independently of any particular infrastructure choice.
+The preliminary domain model referenced by that architecture (entities, value objects, aggregate boundary, and domain rules) is likewise maintained as a single authoritative reference in **[domain-model.md](domain-model.md)**, rather than being repeated here.
 
-- **Domain-Driven Design** — The system will be organized around an explicit domain model representing the core concepts of the Requirements Engineering process, rather than around technical or database-driven structures. Domain logic will be expressed in terms meaningful to the Requirements Engineering domain itself.
-
-- **Repository Pattern** — Persistence concerns will be abstracted behind repository interfaces defined by the domain, so that the domain layer depends on an abstraction rather than on a specific storage technology.
-
-- **Service Layer** — Application-level use cases will be coordinated through a service layer that orchestrates domain objects and repositories, keeping orchestration logic distinct from both the domain model and the infrastructure adapters.
-
-- **AI Gateway** — Access to AI capabilities (e.g., the Gemini API) will be mediated through a dedicated gateway abstraction. This keeps the domain and application layers unaware of which AI provider is used, and reinforces the principle that AI is a supporting, replaceable capability rather than a core dependency of the domain.
-
-### Preliminary Domain Model (To Be Refined)
-
-A first, tentative identification of the core domain concepts is outlined below. This is a preliminary conceptual sketch, not a finalized model: it is expected to be refined, corrected, and extended as the domain layer is actually implemented.
-
-- **Entities:**
-  - `Requirement` — a natural-language requirement and its identity/lifecycle within the system.
-  - `Artifact` — a structured artifact derived from a requirement (e.g., a backlog item).
-- **Value Objects:**
-  - `RequirementText` — the immutable natural-language content of a requirement at a given point in time.
-  - `QualityScore` — the outcome of a quality evaluation associated with a requirement.
-- **Domain Concepts:**
-  - `Traceability Link` — the relationship connecting a requirement to an artifact derived from it.
-  - `Requirement Status` — the current position of a requirement within its lifecycle (e.g., submitted, clarified, validated).
-
-### Conceptual Layering (Textual Diagram)
-
-The diagram below illustrates how the architectural principles above relate to one another. It shows architectural layers and their direction of dependency only — no classes, modules, or implementation details are implied.
-
-```
- ┌──────────────────────────────────────────────────────────┐
- │                     DRIVING ADAPTERS                       │
- │            (inbound — e.g. future FastAPI layer)           │
- └──────────────────────────┬───────────────────────────────┘
-                             │  calls, via an inbound port
-                             ▼
- ┌──────────────────────────────────────────────────────────┐
- │                     APPLICATION LAYER                      │
- │          (use cases / service layer orchestration)         │
- └───────────────┬──────────────────────────┬───────────────┘
-                  │ uses, via a domain port    │ uses, via the AI Gateway port
-                  ▼                            ▼
- ┌────────────────────────────┐   ┌────────────────────────────┐
- │        DOMAIN LAYER          │   │         AI GATEWAY           │
- │  (entities, value objects,   │   │  (abstraction over an        │
- │   business rules)            │   │   external AI provider)      │
- └───────────────┬────────────┘   └───────────────┬────────────┘
-                  │ persists, via a repository port │ delegates, via an adapter
-                  ▼                                  ▼
- ┌────────────────────────────┐   ┌────────────────────────────┐
- │      DRIVEN ADAPTERS         │   │      DRIVEN ADAPTERS         │
- │  (e.g. future Database       │   │  (e.g. future Gemini         │
- │   Adapter)                   │   │   Adapter)                   │
- └────────────────────────────┘   └────────────────────────────┘
-```
-
-- **Driving adapters** are the entry points that trigger application behavior (e.g., a future FastAPI HTTP layer). They depend on the application layer, never the reverse.
-- **Application layer** coordinates use cases (e.g., "submit a requirement", "request an analysis") by orchestrating domain objects and invoking ports; it contains no business rules itself.
-- **Domain layer** holds the entities, value objects, and business rules that define what a requirement and its lifecycle actually mean, independent of any technical detail.
-- **Driven adapters** implement the ports required by the domain and application layers (persistence, AI provider access) and are the only layer aware of specific external technologies.
-
-This layering reflects intended design direction only. None of the boxes shown above currently exist as implemented code; see [Current Development Status](#current-development-status) for what has actually been built so far.
-
----
-
-## API Design
-
-The platform is expected to expose its functional capabilities through an HTTP API, once the application and driving-adapter layers are implemented. The following endpoints are illustrative examples of the intended API surface, aligned with the functional requirements above — they represent design intent, not an implemented or finalized contract.
-
-```
-POST /requirements
-GET  /requirements/{id}
-POST /requirements/{id}/analyse
-```
-
-- `POST /requirements` is expected to correspond to **FR-01** (Requirement Creation).
-- `GET /requirements/{id}` is expected to support retrieval of a requirement's current state, including its quality indication and traceability links.
-- `POST /requirements/{id}/analyse` is expected to correspond to **FR-02** (AI-Assisted Requirement Analysis).
-
-Formal API documentation (OpenAPI/Swagger, generated automatically once FastAPI routes are implemented) will be introduced during development and referenced from this section once available. No API is implemented at the current stage of the project.
+This report focuses on project vision, requirements, workflow, methodology, and project status; readers seeking architectural or domain-modeling detail should consult those two documents directly.
 
 ---
 
@@ -343,6 +303,8 @@ BridgeIT's testing strategy is aligned with its Hexagonal Architecture: each arc
 - **Unit Testing** — Verifies individual domain and application components in isolation (e.g., a single domain rule or service method), with external dependencies replaced by test doubles.
 - **Integration Testing** — Verifies that adapters correctly implement their corresponding ports when connected to real or realistic infrastructure (e.g., persistence, AI Gateway adapter), and that application-layer use cases behave correctly when orchestrating domain objects and ports together.
 - **Acceptance Testing** — Verifies that the system, as a whole, satisfies the functional expectations described in this document, from the perspective of a user of the platform.
+
+These three categories are intended to follow the **test pyramid** principle: a large base of fast, isolated Unit Tests, a smaller layer of Integration Tests, and a minimal set of Acceptance Tests covering only the most significant end-to-end scenarios. This distribution is intended to keep the test suite fast to run and inexpensive to maintain as the codebase grows, consistent with NFR-02 (Testability); no specific proportion between the three categories is fixed at this stage, since no tests yet exist to measure it against.
 
 Each test category is intended to trace back to the requirements it verifies, following the chain:
 
@@ -422,21 +384,27 @@ The project is planned to progress through the following incremental milestones.
 
 - **Milestone 1 — Project Initialization** *(completed)*
   Repository setup from the official Poetry template, package renaming, testing environment, and static analysis configuration.
+  *Deliverable:* An initialized Git repository with Poetry configuration, the `bridgeit` package, a configured test runner, and static analysis tooling — the current state of this repository.
 
 - **Milestone 2 — Domain Model**
-  Implementation of the core domain entities, value objects, and business rules identified in the [Preliminary Domain Model](#preliminary-domain-model-to-be-refined).
+  Implementation of the core domain entities, value objects, and business rules identified in [domain-model.md](domain-model.md).
+  *Deliverable:* Domain entities and value objects implemented as plain Python objects, with no persistence or API dependency, covered by unit tests.
 
 - **Milestone 3 — Requirement Management**
   Implementation of the application-layer use cases and (initially in-memory or minimal) persistence needed to support requirement creation, retrieval, and clarification.
+  *Deliverable:* Application-layer use cases for FR-01 and FR-03, backed by an initial persistence adapter, covered by application-level tests.
 
 - **Milestone 4 — AI Gateway**
   Implementation of the AI Gateway abstraction and its adapter for the Gemini API, supporting AI-assisted requirement analysis.
+  *Deliverable:* An AI Gateway port and a Gemini adapter implementing FR-02 and FR-04 end-to-end, together with the human validation mechanism required by FR-05 to act on the resulting AI Analysis, with the adapter covered by integration tests.
 
 - **Milestone 5 — Traceability**
   Implementation of traceability link management and derived artifact creation.
+  *Deliverable:* FR-06 and FR-07 implemented and exposed through the application layer, with acceptance tests demonstrating the full Requirement → AI Analysis → Human Validation → Traceability Link → Derived Artifact flow.
 
 - **Milestone 6 — Testing and Deployment**
   Consolidation of the automated test suite across all layers, and introduction of the CI/CD pipeline described in [Continuous Integration and Continuous Delivery](#continuous-integration-and-continuous-delivery).
+  *Deliverable:* A consolidated test suite across unit, integration, and acceptance levels, and a working CI/CD pipeline executing linting, type checking, and tests on every commit, with a first versioned package release.
 
 ---
 
