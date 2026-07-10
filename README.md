@@ -1,9 +1,5 @@
 # BridgeIT
 
-![Status](https://img.shields.io/badge/status-architecture%20%26%20setup%20phase-yellow)
-![Python](https://img.shields.io/badge/python-3.11%2B-blue)
-![License](https://img.shields.io/badge/license-Apache%202.0-lightgrey)
-
 > AI-Supported Requirements Engineering Platform — Software Engineering project, University of Bologna.
 
 ## Project Overview
