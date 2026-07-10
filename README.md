@@ -1,12 +1,13 @@
 # BridgeIT
 
+
 > AI-Supported Requirements Engineering Platform — Software Engineering project, University of Bologna.
 
 ## Project Overview
 
 BridgeIT is a **Requirements Engineering platform** that helps business stakeholders and software engineers transform natural-language requirements into structured software artifacts, while preserving complete traceability between a requirement and everything derived from it.
 
-Requirements Engineering is one of the most critical and error-prone disciplines in software development: requirements originate as informal, ambiguous natural-language statements, and translating that informal intent into structured, unambiguous, traceable engineering artifacts is a well-documented source of project failure. BridgeIT uses Artificial Intelligence to assist this translation — flagging ambiguity, proposing structure, and suggesting revisions — but AI in BridgeIT never decides autonomously. Every AI-generated suggestion is a proposal that requires explicit human validation before it can affect the authoritative state of a requirement.
+Requirements Engineering is one of the most critical and error-prone disciplines in software development: requirements originate as informal, ambiguous natural-language statements, and translating that informal intent into structured, unambiguous, traceable engineering artifacts is a well-documented source of project failure. BridgeIT uses Artificial Intelligence to assist this translation, flagging ambiguity, proposing structure, and suggesting revisions, but AI in BridgeIT never decides autonomously. Every AI-generated suggestion is a proposal that requires explicit human validation before it can affect the authoritative state of a requirement.
 
 This distinction is what separates BridgeIT from a generic AI chatbot: BridgeIT is built around an explicit domain model, a defined workflow, and an architecture that keeps every AI-assisted suggestion reviewable, attributable, and traceable to its origin.
 
@@ -38,6 +39,21 @@ The platform is designed around four cardinal engineering principles:
 - Frontend.
 
 The full, up-to-date status is maintained in [`docs/report.md`](./docs/report.md#current-development-status) and is expected to evolve incrementally, milestone by milestone, alongside this README.
+
+## Repository Organization
+
+At this stage, this repository contains both the implementation and the full project documentation (`docs/`). Keeping the two together simplifies iteration while the codebase and documentation are still evolving in step with one another.
+
+The project is intended to adopt a two-repository organization, consistent with the structure recommended for the University of Bologna Software Engineering course: this repository will become the implementation (`artifact`) repository, while the documentation (Project Report, Architecture, and Domain Model) will reside in a dedicated `report` repository. This is a matter of repository structure only — no documentation content will be lost or altered as part of it.
+
+## Project Documentation
+
+The project's documentation is currently available in two places:
+
+- locally, under [`docs/`](./docs), as referenced throughout this README; and
+- in a dedicated documentation repository: **[nikytresca-pixel/report](https://github.com/nikytresca-pixel/report)**.
+
+The dedicated repository is intended to become the canonical location for the project's documentation, consistent with the repository organization recommended for the University of Bologna Software Engineering course. The local copy under `docs/` will eventually be migrated there without any change to its contents; until that migration is complete, the links in this README continue to point to the local copy.
 
 ## Architecture & Documentation
 
