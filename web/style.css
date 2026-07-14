@@ -1,16 +1,200 @@
+:root {
+    --paper: #f5f4f0;
+    --paper-line: #dcdad2;
+    --ink: #1b2431;
+    --ink-muted: #5b6472;
+    --blueprint: #1e3a5f;
+    --blueprint-soft: #2c4d78;
+    --signal-ok: #2f7a4f;
+    --signal-ok-bg: #e7f2ec;
+    --signal-pending: #b8863b;
+    --signal-pending-bg: #f6eede;
+    --signal-error: #a8402e;
+    --signal-error-bg: #f6e6e3;
+
+    --font-display: "IBM Plex Mono", "SFMono-Regular", Consolas, monospace;
+    --font-body: "Inter", system-ui, -apple-system, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: system-ui, sans-serif;
-    max-width: 600px;
-    margin: 4rem auto;
-    padding: 0 1rem;
+    margin: 0;
+    min-height: 100vh;
+    background-color: var(--paper);
+    background-image:
+        linear-gradient(var(--paper-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--paper-line) 1px, transparent 1px);
+    background-size: 32px 32px;
+    color: var(--ink);
+    font-family: var(--font-body);
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 4rem 1.5rem;
 }
 
-button {
-    padding: 0.5rem 1rem;
+.sheet {
+    width: 100%;
+    max-width: 560px;
+    background: #fff;
+    border: 1px solid var(--paper-line);
+    box-shadow: 0 1px 0 var(--paper-line);
+}
+
+.sheet-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1.5rem 2rem;
+    background: var(--blueprint);
+    color: var(--paper);
+}
+
+.wordmark {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.wordmark-bracket {
+    color: var(--blueprint-soft);
+    filter: brightness(2.2);
+}
+
+.sheet-meta {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    color: #c7d3e2;
+}
+
+.sheet-meta-divider {
+    margin: 0 0.4em;
+    opacity: 0.6;
+}
+
+.panel {
+    padding: 2.5rem 2rem;
+}
+
+.eyebrow {
+    margin: 0 0 0.5rem;
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-muted);
+}
+
+.panel h1 {
+    margin: 0 0 0.75rem;
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+}
+
+.panel-description {
+    margin: 0 0 1.75rem;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    max-width: 42ch;
+}
+
+.btn {
+    font-family: var(--font-body);
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #fff;
+    background: var(--blueprint);
+    border: 1px solid var(--blueprint);
+    padding: 0.7rem 1.25rem;
     cursor: pointer;
+    transition: background-color 0.15s ease;
 }
 
-#health-result {
-    margin-top: 1rem;
-    font-weight: bold;
+.btn:hover {
+    background: var(--blueprint-soft);
+}
+
+.btn:focus-visible {
+    outline: 2px solid var(--blueprint);
+    outline-offset: 3px;
+}
+
+.stamp {
+    margin-top: 1.75rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--paper-line);
+    font-family: var(--font-display);
+    font-size: 0.85rem;
+    transform: rotate(-0.6deg);
+    transition:
+        border-color 0.15s ease,
+        color 0.15s ease,
+        background-color 0.15s ease;
+}
+
+.stamp-label {
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: 0.7rem;
+    color: var(--ink-muted);
+}
+
+.stamp--idle {
+    color: var(--ink-muted);
+    background: transparent;
+}
+
+.stamp--pending {
+    color: var(--signal-pending);
+    border-color: var(--signal-pending);
+    background: var(--signal-pending-bg);
+}
+
+.stamp--ok {
+    color: var(--signal-ok);
+    border-color: var(--signal-ok);
+    background: var(--signal-ok-bg);
+}
+
+.stamp--error {
+    color: var(--signal-error);
+    border-color: var(--signal-error);
+    background: var(--signal-error-bg);
+}
+
+.sheet-footer {
+    padding: 1rem 2rem;
+    border-top: 1px solid var(--paper-line);
+    font-size: 0.75rem;
+    color: var(--ink-muted);
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 2rem 1rem;
+    }
+
+    .sheet-header,
+    .panel {
+        padding-left: 1.25rem;
+        padding-right: 1.25rem;
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .btn,
+    .stamp {
+        transition: none;
+    }
 }
