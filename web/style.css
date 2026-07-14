@@ -1,0 +1,16 @@
+body {
+    font-family: system-ui, sans-serif;
+    max-width: 600px;
+    margin: 4rem auto;
+    padding: 0 1rem;
+}
+
+button {
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+#health-result {
+    margin-top: 1rem;
+    font-weight: bold;
+}
