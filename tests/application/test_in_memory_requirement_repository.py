@@ -1,6 +1,7 @@
 import pytest
 
 from bridgeit.application.ports.requirement_repository import RequirementRepository
+from bridgeit.domain.requirement import Requirement
 from tests.application.fakes import InMemoryRequirementRepository
 
 
@@ -16,12 +17,12 @@ class TestInMemoryRequirementRepository:
 
     def test_save_then_get_by_id_returns_the_same_requirement(self) -> None:
         repository = InMemoryRequirementRepository()
-        fake_requirement = {"text": "The system shall do X"}
+        requirement = Requirement.submit("The system shall do X")
 
-        repository.save("req-1", fake_requirement)
-        retrieved = repository.get_by_id("req-1")
+        repository.save(requirement.id, requirement)
+        retrieved = repository.get_by_id(requirement.id)
 
-        assert retrieved == fake_requirement
+        assert retrieved is requirement
 
     def test_get_by_id_returns_none_when_not_found(self) -> None:
         repository = InMemoryRequirementRepository()
@@ -35,14 +36,14 @@ class TestInMemoryRequirementRepository:
         # a write and a read (relevant now, and even more so once a real
         # persistence adapter replaces this fake in Week 2).
         repository = InMemoryRequirementRepository()
-        original = {"text": "Original text", "status": "Submitted"}
+        original = Requirement.submit("Original text")
 
-        repository.save("req-2", original)
-        retrieved = repository.get_by_id("req-2")
+        repository.save(original.id, original)
+        retrieved = repository.get_by_id(original.id)
 
         assert retrieved is not None
-        assert retrieved["text"] == "Original text"
-        assert retrieved["status"] == "Submitted"
+        assert retrieved.text.content == "Original text"
+        assert retrieved.status.value == "Submitted"
 
 
 @pytest.fixture

@@ -1,6 +1,5 @@
-from typing import Any
-
 from bridgeit.application.ports.requirement_repository import RequirementRepository
+from bridgeit.domain.requirement import Requirement
 
 
 class InMemoryRequirementRepository(RequirementRepository):
@@ -15,10 +14,10 @@ class InMemoryRequirementRepository(RequirementRepository):
     """
 
     def __init__(self) -> None:
-        self._storage: dict[str, Any] = {}
+        self._storage: dict[str, Requirement] = {}
 
-    def save(self, requirement_id: str, requirement: Any) -> None:
+    def save(self, requirement_id: str, requirement: Requirement) -> None:
         self._storage[requirement_id] = requirement
 
-    def get_by_id(self, requirement_id: str) -> Any | None:
+    def get_by_id(self, requirement_id: str) -> Requirement | None:
         return self._storage.get(requirement_id)
