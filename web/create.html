@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BridgeIT</title>
+    <title>BridgeIT — New Requirement</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -21,31 +21,40 @@
             <div class="sheet-meta">
                 <span>Requirements Engineering Console</span>
                 <span class="sheet-meta-divider">&middot;</span>
-                <span>Rev. 0.2</span>
+                <span>Rev. 0.3</span>
             </div>
         </header>
 
-<nav class="nav">
-    <a href="index.html" class="nav--active">Health</a>
-    <a href="create.html">New requirement</a>
-    <a href="requirements.html">View requirement</a>
-</nav>
+        <nav class="nav">
+            <a href="index.html">Health</a>
+            <a href="create.html" class="nav--active">New requirement</a>
+            <a href="requirements.html">View requirement</a>
+        </nav>
 
         <main class="panel">
-            <p class="eyebrow">System check</p>
-            <h1>Backend connection</h1>
+            <p class="eyebrow">FR-01</p>
+            <h1>Submit a requirement</h1>
             <p class="panel-description">
-                Confirms that this console can reach the BridgeIT API before
-                any requirement is submitted, analysed, or validated.
+                Write the requirement in plain language. It will be created
+                with status <code>Submitted</code>, ready for AI analysis.
             </p>
 
-            <button id="check-health" class="btn" type="button">
-                Check backend health
-            </button>
+            <form id="create-form" class="form">
+                <label for="requirement-text" class="form-label">Requirement text</label>
+                <textarea
+                    id="requirement-text"
+                    class="form-textarea"
+                    rows="4"
+                    placeholder="The system shall..."
+                    required
+                ></textarea>
+
+                <button type="submit" class="btn">Submit requirement</button>
+            </form>
 
             <div id="stamp" class="stamp stamp--idle" role="status" aria-live="polite">
                 <span class="stamp-label">Status</span>
-                <span class="stamp-value" id="stamp-value">Not checked</span>
+                <span class="stamp-value" id="stamp-value">Not submitted</span>
             </div>
         </main>
 
@@ -54,7 +63,7 @@
         </footer>
     </div>
 
-<script src="api.js"></script>
-<script src="app.js"></script>
+    <script src="api.js"></script>
+    <script src="create.js"></script>
 </body>
 </html>

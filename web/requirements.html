@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BridgeIT — Requirement</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="sheet">
+        <header class="sheet-header">
+            <div class="wordmark">
+                <span class="wordmark-bracket">[</span>BridgeIT<span class="wordmark-bracket">]</span>
+            </div>
+            <div class="sheet-meta">
+                <span>Requirements Engineering Console</span>
+                <span class="sheet-meta-divider">&middot;</span>
+                <span>Rev. 0.3</span>
+            </div>
+        </header>
+
+        <nav class="nav">
+            <a href="index.html">Health</a>
+            <a href="create.html">New requirement</a>
+            <a href="requirements.html" class="nav--active">View requirement</a>
+        </nav>
+
+        <main class="panel">
+            <p class="eyebrow">Requirement detail</p>
+
+            <form id="lookup-form" class="form form--inline">
+                <label for="requirement-id" class="form-label">Requirement id</label>
+                <input
+                    id="requirement-id"
+                    class="form-input"
+                    type="text"
+                    placeholder="Paste an id, or submit a new requirement"
+                />
+                <button type="submit" class="btn btn--secondary">Look up</button>
+            </form>
+
+            <div id="result" class="result" hidden>
+                <h1 id="result-text"></h1>
+                <div id="stamp" class="stamp stamp--idle" role="status" aria-live="polite">
+                    <span class="stamp-label">Status</span>
+                    <span class="stamp-value" id="stamp-value">&mdash;</span>
+                </div>
+                <p class="result-id">id: <code id="result-id"></code></p>
+            </div>
+        </main>
+
+        <footer class="sheet-footer">
+            <span>BridgeIT &mdash; Software Engineering, University of Bologna</span>
+        </footer>
+    </div>
+
+    <script src="api.js"></script>
+    <script src="requirements.js"></script>
+</body>
+</html>
