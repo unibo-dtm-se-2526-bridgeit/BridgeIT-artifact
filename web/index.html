@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BridgeIT</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+    <div class="sheet">
+        <header class="sheet-header">
+            <div class="wordmark">
+                <span class="wordmark-bracket">[</span>BridgeIT<span class="wordmark-bracket">]</span>
+            </div>
+            <div class="sheet-meta">
+                <span>Requirements Engineering Console</span>
+                <span class="sheet-meta-divider">&middot;</span>
+                <span>Rev. 0.2</span>
+            </div>
+        </header>
+
+        <main class="panel">
+            <p class="eyebrow">System check</p>
+            <h1>Backend connection</h1>
+            <p class="panel-description">
+                Confirms that this console can reach the BridgeIT API before
+                any requirement is submitted, analysed, or validated.
+            </p>
+
+            <button id="check-health" class="btn" type="button">
+                Check backend health
+            </button>
+
+            <div id="stamp" class="stamp stamp--idle" role="status" aria-live="polite">
+                <span class="stamp-label">Status</span>
+                <span class="stamp-value" id="stamp-value">Not checked</span>
+            </div>
+        </main>
+
+        <footer class="sheet-footer">
+            <span>BridgeIT &mdash; Software Engineering, University of Bologna</span>
+        </footer>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
