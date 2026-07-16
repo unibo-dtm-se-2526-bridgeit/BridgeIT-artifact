@@ -7,29 +7,30 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600&display=swap"
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
         rel="stylesheet"
     />
     <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+    <div class="spotlight" id="spotlight"></div>
+
     <div class="sheet">
         <header class="sheet-header">
-            <div class="wordmark">
-                <span class="wordmark-bracket">[</span>BridgeIT<span class="wordmark-bracket">]</span>
+            <div class="header-row">
+                <div class="wordmark">BridgeIT</div>
+                <div class="sheet-meta">
+                    <span>Requirements Engineering Console</span>
+                    <span class="sheet-meta-divider">&middot;</span>
+                    <span>Rev. 0.4</span>
+                </div>
             </div>
-            <div class="sheet-meta">
-                <span>Requirements Engineering Console</span>
-                <span class="sheet-meta-divider">&middot;</span>
-                <span>Rev. 0.3</span>
-            </div>
+            <nav class="nav">
+                <a href="index.html">Health</a>
+                <a href="create.html">New requirement</a>
+                <a href="requirements.html" class="nav--active">View requirement</a>
+            </nav>
         </header>
-
-        <nav class="nav">
-            <a href="index.html">Health</a>
-            <a href="create.html">New requirement</a>
-            <a href="requirements.html" class="nav--active">View requirement</a>
-        </nav>
 
         <main class="panel">
             <p class="eyebrow">Requirement detail</p>
@@ -60,6 +61,7 @@
         </footer>
     </div>
 
+    <script src="effects.js"></script>
     <script src="api.js"></script>
     <script src="requirements.js"></script>
 </body>
