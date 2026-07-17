@@ -11,6 +11,9 @@ authors = [
 ]
 license = "Apache 2.0"
 readme = "README.md"
+homepage = "https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact"
+repository = "https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact"
+keywords = ["requirements-engineering", "ai", "software-engineering", "hexagonal-architecture"]
 
 [tool.poetry.dependencies]
 python = ">= 3.10.0 < 4.0.0"

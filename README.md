@@ -135,6 +135,18 @@ The API will be available at `http://127.0.0.1:8000`, with interactive documenta
 
 With the API server running, open `web/index.html` (or any page under `web/`) directly in a browser. The frontend is a static HTML/CSS/JavaScript client with no build step required.
 
+### Running with Docker
+
+As an alternative to a local Poetry installation, the API can be run in
+a Docker container:
+
+```bash
+docker compose up --build
+```
+
+The API will be available at `http://127.0.0.1:8000`, exactly as when
+running it locally.
+
 ## Development
 
 Project tasks are run through `poe` (Poe the Poet), configured as the project's task runner on top of Poetry.
@@ -152,6 +164,9 @@ poetry run poe format-check
 # Auto-fix code formatting
 poetry run poe format
 ```
+# Measure test coverage
+poetry run poe coverage
+poetry run poe coverage-report
 
 All of the above are expected to be run locally before every commit, and are also enforced automatically in the project's Continuous Integration pipeline (see `docs/report.md` — Continuous Integration and Continuous Delivery).
 
