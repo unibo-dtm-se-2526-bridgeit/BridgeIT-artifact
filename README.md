@@ -25,9 +25,9 @@ BridgeIT has completed its Domain Layer, initial Persistence Layer, and initial 
 
 - Domain model: `Requirement` aggregate root, `RequirementText` and `RequirementStatus` value objects, with explicit lifecycle state transitions (Submitted → Analyzed → Clarified → Validated/Rejected).
 - Application Layer scaffolding: the `RequirementRepository` port, Pydantic DTOs for the API boundary, and an in-memory fake repository used to verify the port's contract in tests.
-- Persistence Layer: `SQLiteRequirementRepository`, a concrete adapter for `RequirementRepository`, backed by Python's standard-library `sqlite3` (see `docs/adr/0001-sqlite-persistence-without-orm.md` for the decision record).
+- Persistence Layer: `SQLiteRequirementRepository`, a concrete adapter for `RequirementRepository`, backed by Python's standard-library `sqlite3`.
 - API layer (FastAPI): `GET /health`, `POST /requirements`, `GET /requirements/{id}`, with a shared structured error format (`{"error": {"code": ..., "message": ...}}`) applied consistently across endpoints and validation errors.
-- Frontend: a minimal HTML/CSS/JavaScript web client (no framework or build system — see `docs/adr/0002-vanilla-html-css-js-frontend.md`), with pages to submit and view a requirement, wired to the live API.
+- Frontend: a minimal HTML/CSS/JavaScript web client (no framework or build system), with pages to submit and view a requirement, wired to the live API.
 - Automated testing: unit tests for the domain and application layers, integration tests for the persistence layer and API endpoints.
 - CI/CD pipeline (GitHub Actions): dependency install, static analysis (`ruff`, `mypy`), automated tests, and release automation on `master`.
 
@@ -137,15 +137,13 @@ With the API server running, open `web/index.html` (or any page under `web/`) di
 
 ### Running with Docker
 
-As an alternative to a local Poetry installation, the API can be run in
-a Docker container:
+As an alternative to a local Poetry installation, the API can be run in a Docker container:
 
 ```bash
 docker compose up --build
 ```
 
-The API will be available at `http://127.0.0.1:8000`, exactly as when
-running it locally.
+The API will be available at `http://127.0.0.1:8000`, exactly as when running it locally.
 
 ## Development
 
@@ -163,10 +161,11 @@ poetry run poe format-check
 
 # Auto-fix code formatting
 poetry run poe format
-```
+
 # Measure test coverage
 poetry run poe coverage
 poetry run poe coverage-report
+```
 
 All of the above are expected to be run locally before every commit, and are also enforced automatically in the project's Continuous Integration pipeline (see `docs/report.md` — Continuous Integration and Continuous Delivery).
 
