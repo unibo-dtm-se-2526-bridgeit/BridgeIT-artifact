@@ -52,7 +52,10 @@ class TestAnalyseRequirementUseCase:
     def test_raises_when_requirement_does_not_exist(self) -> None:
         repository = InMemoryRequirementRepository()
         use_case = AnalyseRequirementUseCase(
-            repository, _fake_ai_gateway(AIAnalysis(quality_score=QualityScore.READY_FOR_VALIDATION))
+            repository,
+            _fake_ai_gateway(
+                AIAnalysis(quality_score=QualityScore.READY_FOR_VALIDATION)
+            ),
         )
 
         with pytest.raises(RequirementNotFoundError):

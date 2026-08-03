@@ -44,7 +44,9 @@ Requirement:
 class GeminiAIGateway(AIGateway):
     """Concrete AIGateway implementation backed by the Gemini API."""
 
-    def __init__(self, client: genai.Client | None = None, model: str = DEFAULT_MODEL) -> None:
+    def __init__(
+        self, client: genai.Client | None = None, model: str = DEFAULT_MODEL
+    ) -> None:
         # Deliberately NOT reading GEMINI_API_KEY here: constructing this
         # class (e.g. once at app startup, mirroring how _repository is
         # constructed in main.py) must never fail just because the key

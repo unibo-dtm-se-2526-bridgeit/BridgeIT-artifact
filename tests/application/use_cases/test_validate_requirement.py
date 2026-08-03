@@ -48,7 +48,9 @@ class TestValidateRequirementUseCase:
         repository.save(requirement.id, requirement)
         use_case = ValidateRequirementUseCase(repository)
 
-        result = use_case.execute(requirement.id, decision="edit", modified_text="Better text.")
+        result = use_case.execute(
+            requirement.id, decision="edit", modified_text="Better text."
+        )
 
         assert result.status == RequirementStatus.CLARIFIED
         assert result.text.content == "Better text."

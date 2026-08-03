@@ -20,7 +20,9 @@ class RequirementNotFoundError(Exception):
 class AnalyseRequirementUseCase:
     """Use case backing POST /requirements/{id}/analyse."""
 
-    def __init__(self, repository: RequirementRepository, ai_gateway: AIGateway) -> None:
+    def __init__(
+        self, repository: RequirementRepository, ai_gateway: AIGateway
+    ) -> None:
         self._repository = repository
         self._ai_gateway = ai_gateway
 

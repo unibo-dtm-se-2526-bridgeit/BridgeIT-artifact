@@ -33,16 +33,22 @@ class TestGeminiAIGatewayAnalyse:
         assert analysis.issues == ("Missing a measurable acceptance criterion.",)
 
     def test_returns_ready_for_validation_with_no_issues(self) -> None:
-        client = _mocked_client('{"quality_indication": "ready_for_validation", "issues": []}')
+        client = _mocked_client(
+            '{"quality_indication": "ready_for_validation", "issues": []}'
+        )
         gateway = GeminiAIGateway(client=client)
 
-        analysis = gateway.analyse("The system shall respond within 200ms for 95% of requests.")
+        analysis = gateway.analyse(
+            "The system shall respond within 200ms for 95% of requests."
+        )
 
         assert analysis.quality_score == QualityScore.READY_FOR_VALIDATION
         assert analysis.issues == ()
 
     def test_calls_the_client_with_the_configured_model(self) -> None:
-        client = _mocked_client('{"quality_indication": "ready_for_validation", "issues": []}')
+        client = _mocked_client(
+            '{"quality_indication": "ready_for_validation", "issues": []}'
+        )
         gateway = GeminiAIGateway(client=client, model="gemini-2.0-flash")
 
         gateway.analyse("Some requirement text.")
@@ -58,7 +64,9 @@ class TestGeminiAIGatewayAnalyse:
         with pytest.raises(AIGatewayError):
             gateway.analyse("Some requirement text.")
 
-    def test_raises_ai_gateway_error_on_unexpected_quality_indication_value(self) -> None:
+    def test_raises_ai_gateway_error_on_unexpected_quality_indication_value(
+        self,
+    ) -> None:
         client = _mocked_client('{"quality_indication": "maybe", "issues": []}')
         gateway = GeminiAIGateway(client=client)
 

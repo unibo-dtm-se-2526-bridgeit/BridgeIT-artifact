@@ -121,10 +121,14 @@ def register_analysis_routes(
                 message="No requirement found with the given id.",
             ) from error
         except InvalidValidationDecisionError as error:
-            raise ApiError(status_code=400, code="missing_field", message=str(error)) from error
+            raise ApiError(
+                status_code=400, code="missing_field", message=str(error)
+            ) from error
         except InvalidStateTransitionError as error:
             raise ApiError(
                 status_code=409, code="invalid_status_transition", message=str(error)
             ) from error
 
-        return ValidateResponse(requirement_id=requirement_id, status=requirement.status.value)
+        return ValidateResponse(
+            requirement_id=requirement_id, status=requirement.status.value
+        )
