@@ -20,10 +20,17 @@ from google.genai import errors as genai_errors
 from bridgeit.application.ports.ai_gateway import AIGateway, AIGatewayError
 from bridgeit.domain.ai_analysis import AIAnalysis, QualityScore
 
-# Default model: a fast, free-tier-friendly Gemini model. Revisit if rate
-# limits become an issue -- see report.md for the free-tier comparison
-# the professor asked for.
-DEFAULT_MODEL = "gemini-2.0-flash"
+# Default model: chosen from the models actually showing a non-zero
+# free-tier quota on this project's AI Studio dashboard (checked
+# 2026-08-03) -- "gemini-2.0-flash" itself showed 0/0/0 (deprecated in
+# favour of newer versions), while the "flash-lite" variants had real,
+# generous quotas. "gemini-3.5-flash-lite" had the highest daily limit
+# (500 requests/day) among them, comfortably enough for course-project
+# use, and "lite" is a good fit for this simple classification task
+# (no need for a heavier full "Pro"/"Flash" model). If this exact model
+# ID ever stops working, check aistudio.google.com's rate-limits page
+# for whichever "flash-lite" model currently shows a non-zero quota.
+DEFAULT_MODEL = "gemini-3.5-flash-lite"
 
 # Retry policy for transient overload errors only (the professor's own
 # forum message flagged free-tier rate limits as a real risk to plan
