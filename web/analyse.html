@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BridgeIT — AI Analysis</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+</head>
+<body>
+    <div class="spotlight"></div>
+    <div class="sheet">
+        <header class="sheet-header">
+            <div class="header-row">
+                <div class="wordmark">
+                    <img src="assets/logo.png" alt="" class="wordmark-icon" />
+                    BridgeIT
+                </div>
+                <div class="sheet-meta">
+                    <span>Requirements Engineering Console</span>
+                    <span class="sheet-meta-divider">&middot;</span>
+                    <span>Rev. 0.3</span>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Health</a>
+                <a href="create.html">Create</a>
+                <a href="requirements.html">Requirements</a>
+                <a href="analyse.html" class="nav--active">Analyse</a>
+                <a href="validate.html">Validate</a>
+            </nav>
+        </header>
+        <main class="panel">
+            <p class="eyebrow">AI Analysis &middot; FR-02 / FR-04</p>
+            <h1>Request an AI-assisted analysis</h1>
+            <p class="panel-description">
+                Enter a requirement's <code>id</code> to ask Gemini for a quality
+                indication and any issues it finds. This never changes the
+                requirement on its own — a human still has to validate it
+                afterwards.
+            </p>
+
+            <form class="form form--inline" id="analyse-form">
+                <div>
+                    <label class="form-label" for="requirement-id">Requirement id</label><br />
+                    <input
+                        class="form-input"
+                        type="text"
+                        id="requirement-id"
+                        name="requirement-id"
+                        placeholder="e.g. a506624b-15d2-459d-babe-d3e0868d2621"
+                        required
+                    />
+                </div>
+                <button class="btn" type="submit" id="analyse-button">
+                    Request analysis
+                </button>
+            </form>
+
+            <div id="stamp" class="stamp stamp--idle" role="status" aria-live="polite">
+                <span class="stamp-label">Status</span>
+                <span class="stamp-value" id="stamp-value">Not checked</span>
+            </div>
+
+            <section class="result" id="result" hidden>
+                <h1 id="result-heading">Quality indication</h1>
+                <p class="panel-description" id="result-quality"></p>
+                <div id="result-issues"></div>
+                <p class="result-id" id="result-status"></p>
+            </section>
+        </main>
+        <footer class="sheet-footer">
+            <span>BridgeIT &mdash; Software Engineering, University of Bologna</span>
+        </footer>
+    </div>
+    <script src="analyse.js"></script>
+</body>
+</html>

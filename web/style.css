@@ -350,3 +350,16 @@ body.pointer-active .spotlight {
     body { padding: 2rem 1rem; }
     .sheet-header, .panel { padding-left: 1.4rem; padding-right: 1.4rem; }
 }
+/* Logo icon next to the wordmark text (added alongside the BridgeIT logo) */
+.wordmark {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wordmark-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: block;
+}
