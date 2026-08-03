@@ -71,3 +71,20 @@ class TestGeminiAIGatewayAnalyse:
 
         with pytest.raises(AIGatewayError):
             gateway.analyse("Some requirement text.")
+
+
+class TestGeminiAIGatewayLazyInitialization:
+    def test_construction_never_fails_even_without_a_key_or_client(self) -> None:
+        # Must never raise, even with GEMINI_API_KEY unset -- constructing
+        # this at app startup (main.py) must not be able to take down the
+        # whole app over a missing AI key.
+        GeminiAIGateway()
+
+    def test_analyse_raises_a_clear_error_when_no_key_and_no_client(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        monkeypatch.delenv("GEMINI_API_KEY", raising=False)
+        gateway = GeminiAIGateway()
+
+        with pytest.raises(AIGatewayError):
+            gateway.analyse("Some requirement text.")

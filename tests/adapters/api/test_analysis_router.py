@@ -1,6 +1,6 @@
 """Integration tests for the analyse/validate routes, using FastAPI's
-TestClient. Dependencies are overridden with real use cases wired to an
-in-memory repository -- no real Gemini call, no real database.
+TestClient. No real Gemini call, no real database -- both replaced with
+fakes/mocks passed directly to register_analysis_routes.
 """
 
 from unittest.mock import MagicMock
@@ -8,15 +8,8 @@ from unittest.mock import MagicMock
 from fastapi import FastAPI
 from fastapi.testclient import TestClient
 
-from bridgeit.adapters.api.analysis_router import (
-    get_analyse_use_case,
-    get_validate_use_case,
-    router,
-)
-from bridgeit.application.use_cases.analyse_requirement import AnalyseRequirementUseCase
-from bridgeit.application.use_cases.validate_requirement import (
-    ValidateRequirementUseCase,
-)
+from bridgeit.adapters.api.analysis_router import register_analysis_routes
+from bridgeit.adapters.api.errors import register_error_handlers
 from bridgeit.domain.ai_analysis import AIAnalysis, QualityScore
 from bridgeit.domain.requirement import Requirement
 from tests.application.fakes import InMemoryRequirementRepository
@@ -24,17 +17,14 @@ from tests.application.fakes import InMemoryRequirementRepository
 
 def _build_client(repository: InMemoryRequirementRepository) -> TestClient:
     app = FastAPI()
-    app.include_router(router)
+    register_error_handlers(app)
 
     fake_ai_gateway = MagicMock()
     fake_ai_gateway.analyse.return_value = AIAnalysis(
         quality_score=QualityScore.NEEDS_CLARIFICATION, issues=("Ambiguous actor.",)
     )
 
-    app.dependency_overrides[get_analyse_use_case] = lambda: AnalyseRequirementUseCase(
-        repository, fake_ai_gateway
-    )
-    app.dependency_overrides[get_validate_use_case] = lambda: ValidateRequirementUseCase(repository)
+    register_analysis_routes(app, repository=repository, ai_gateway=fake_ai_gateway)
     return TestClient(app)
 
 
@@ -60,7 +50,7 @@ class TestAnalyseRoute:
         response = client.post("/requirements/does-not-exist/analyse")
 
         assert response.status_code == 404
-        assert response.json()["detail"]["error"]["code"] == "requirement_not_found"
+        assert response.json()["error"]["code"] == "requirement_not_found"
 
 
 class TestValidateRoute:
@@ -90,7 +80,7 @@ class TestValidateRoute:
         )
 
         assert response.status_code == 400
-        assert response.json()["detail"]["error"]["code"] == "missing_field"
+        assert response.json()["error"]["code"] == "missing_field"
 
     def test_approve_on_submitted_requirement_returns_409(self) -> None:
         repository = InMemoryRequirementRepository()
@@ -103,4 +93,4 @@ class TestValidateRoute:
         )
 
         assert response.status_code == 409
-        assert response.json()["detail"]["error"]["code"] == "invalid_status_transition"
+        assert response.json()["error"]["code"] == "invalid_status_transition"

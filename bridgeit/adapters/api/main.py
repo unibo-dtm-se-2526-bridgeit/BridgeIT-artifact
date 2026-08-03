@@ -3,9 +3,11 @@ from pathlib import Path
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from bridgeit.adapters.api.analysis_router import register_analysis_routes
 from bridgeit.adapters.api.errors import ApiError, register_error_handlers
 from bridgeit.application.dto import RequirementCreateRequest, RequirementResponse
 from bridgeit.domain.requirement import Requirement
+from bridgeit.infrastructure.ai.gemini_ai_gateway import GeminiAIGateway
 from bridgeit.infrastructure.persistence.sqlite_requirement_repository import (
     SQLiteRequirementRepository,
 )
@@ -33,6 +35,12 @@ app.add_middleware(
 # the route should depend on the Use Case, not on infrastructure directly.
 _db_path = Path(__file__).resolve().parents[3] / "bridgeit.db"
 _repository = SQLiteRequirementRepository(_db_path)
+
+# AI Gateway (Milestone 5): constructed once here, same style as
+# _repository above. Reads GEMINI_API_KEY from the environment -- see
+# infrastructure/ai/gemini_ai_gateway.py.
+_ai_gateway = GeminiAIGateway()
+register_analysis_routes(app, repository=_repository, ai_gateway=_ai_gateway)
 
 
 @app.get("/health")

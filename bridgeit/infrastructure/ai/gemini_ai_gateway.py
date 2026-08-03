@@ -45,15 +45,30 @@ class GeminiAIGateway(AIGateway):
     """Concrete AIGateway implementation backed by the Gemini API."""
 
     def __init__(self, client: genai.Client | None = None, model: str = DEFAULT_MODEL) -> None:
-        # Accepting an optional pre-built client (rather than only reading
-        # GEMINI_API_KEY internally) is what makes this class testable
-        # with a mocked client -- see the corresponding test module.
-        self._client = client if client is not None else genai.Client(api_key=os.environ["GEMINI_API_KEY"])
+        # Deliberately NOT reading GEMINI_API_KEY here: constructing this
+        # class (e.g. once at app startup, mirroring how _repository is
+        # constructed in main.py) must never fail just because the key
+        # isn't set yet -- that would take down the whole app (and any
+        # test or CI run that imports main.py) over a single AI feature.
+        # The key is only required once analyse() is actually called.
+        self._client = client
         self._model = model
 
+    def _get_client(self) -> genai.Client:
+        if self._client is None:
+            api_key = os.environ.get("GEMINI_API_KEY")
+            if not api_key:
+                raise AIGatewayError(
+                    "GEMINI_API_KEY is not set. Set it as an environment "
+                    "variable before requesting an AI analysis."
+                )
+            self._client = genai.Client(api_key=api_key)
+        return self._client
+
     def analyse(self, requirement_text: str) -> AIAnalysis:
+        client = self._get_client()
         prompt = _ANALYSIS_PROMPT.format(requirement_text=requirement_text)
-        response = self._client.models.generate_content(model=self._model, contents=prompt)
+        response = client.models.generate_content(model=self._model, contents=prompt)
         if response.text is None:
             raise AIGatewayError("Gemini returned an empty response.")
         return self._parse_response(response.text)
