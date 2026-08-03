@@ -12,8 +12,10 @@ from __future__ import annotations
 
 import json
 import os
+import time
 
 from google import genai
+from google.genai import errors as genai_errors
 
 from bridgeit.application.ports.ai_gateway import AIGateway, AIGatewayError
 from bridgeit.domain.ai_analysis import AIAnalysis, QualityScore
@@ -22,6 +24,15 @@ from bridgeit.domain.ai_analysis import AIAnalysis, QualityScore
 # limits become an issue -- see report.md for the free-tier comparison
 # the professor asked for.
 DEFAULT_MODEL = "gemini-2.0-flash"
+
+# Retry policy for transient overload errors only (the professor's own
+# forum message flagged free-tier rate limits as a real risk to plan
+# for). Deliberately simple: a fixed number of attempts with a fixed
+# short wait, not a full exponential-backoff/model-fallback system --
+# that would be complexity this project hasn't actually needed yet.
+_RETRYABLE_STATUS_CODES = frozenset({429, 503})
+_MAX_ATTEMPTS = 3
+_RETRY_DELAY_SECONDS = 1.5
 
 _ANALYSIS_PROMPT = """You are a Requirements Engineering assistant. Analyse the \
 following software requirement, written in natural language, and reply with \
@@ -70,10 +81,34 @@ class GeminiAIGateway(AIGateway):
     def analyse(self, requirement_text: str) -> AIAnalysis:
         client = self._get_client()
         prompt = _ANALYSIS_PROMPT.format(requirement_text=requirement_text)
-        response = client.models.generate_content(model=self._model, contents=prompt)
+        response = self._generate_with_retry(client, self._model, prompt)
         if response.text is None:
             raise AIGatewayError("Gemini returned an empty response.")
         return self._parse_response(response.text)
+
+    @staticmethod
+    def _generate_with_retry(
+        client: genai.Client, model: str, prompt: str
+    ) -> genai.types.GenerateContentResponse:
+        """Calls Gemini, retrying only on transient overload errors
+        (429 rate-limited, 503 temporarily unavailable) with a short
+        wait between attempts. Any other error (e.g. 401 invalid key,
+        404 unknown model) is not retryable and fails immediately --
+        retrying those would just waste time on a guaranteed failure.
+        """
+        for attempt in range(1, _MAX_ATTEMPTS + 1):
+            try:
+                return client.models.generate_content(model=model, contents=prompt)
+            except genai_errors.APIError as error:
+                is_retryable = error.code in _RETRYABLE_STATUS_CODES
+                is_last_attempt = attempt == _MAX_ATTEMPTS
+                if not is_retryable or is_last_attempt:
+                    raise AIGatewayError(f"Gemini API error: {error}") from error
+                time.sleep(_RETRY_DELAY_SECONDS)
+        # Unreachable: the loop above always returns or raises. Present
+        # only to satisfy mypy that this function has no implicit
+        # "falls off the end and returns None" path.
+        raise AssertionError("unreachable")
 
     @staticmethod
     def _parse_response(raw_text: str) -> AIAnalysis:

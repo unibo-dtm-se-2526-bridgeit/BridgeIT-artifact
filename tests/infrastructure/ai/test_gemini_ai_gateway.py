@@ -96,3 +96,80 @@ class TestGeminiAIGatewayLazyInitialization:
 
         with pytest.raises(AIGatewayError):
             gateway.analyse("Some requirement text.")
+
+
+class TestGeminiAIGatewayRealApiErrors:
+    def test_wraps_a_genai_api_error_into_ai_gateway_error(self) -> None:
+        from google.genai import errors as genai_errors
+
+        client = MagicMock()
+        client.models.generate_content.side_effect = genai_errors.APIError(
+            401, {"error": {"message": "API key not valid"}}
+        )
+        gateway = GeminiAIGateway(client=client)
+
+        with pytest.raises(AIGatewayError):
+            gateway.analyse("Some requirement text.")
+
+
+class TestGeminiAIGatewayRetry:
+    def test_retries_once_on_a_429_and_then_succeeds(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        from google.genai import errors as genai_errors
+
+        monkeypatch.setattr(
+            "time.sleep", lambda _seconds: None
+        )  # don't slow down the test
+
+        client = MagicMock()
+        client.models.generate_content.side_effect = [
+            genai_errors.APIError(429, {"error": {"message": "rate limited"}}),
+            MagicMock(
+                text='{"quality_indication": "ready_for_validation", "issues": []}'
+            ),
+        ]
+        gateway = GeminiAIGateway(client=client)
+
+        analysis = gateway.analyse("Some requirement text.")
+
+        assert analysis.quality_score == QualityScore.READY_FOR_VALIDATION
+        assert client.models.generate_content.call_count == 2
+
+    def test_retries_on_503_up_to_the_limit_then_raises(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        from google.genai import errors as genai_errors
+
+        monkeypatch.setattr("time.sleep", lambda _seconds: None)
+
+        client = MagicMock()
+        client.models.generate_content.side_effect = genai_errors.APIError(
+            503, {"error": {"message": "overloaded"}}
+        )
+        gateway = GeminiAIGateway(client=client)
+
+        with pytest.raises(AIGatewayError):
+            gateway.analyse("Some requirement text.")
+
+        assert client.models.generate_content.call_count == 3
+
+    def test_does_not_retry_a_non_retryable_error(
+        self, monkeypatch: pytest.MonkeyPatch
+    ) -> None:
+        from google.genai import errors as genai_errors
+
+        monkeypatch.setattr("time.sleep", lambda _seconds: None)
+
+        client = MagicMock()
+        client.models.generate_content.side_effect = genai_errors.APIError(
+            401, {"error": {"message": "invalid API key"}}
+        )
+        gateway = GeminiAIGateway(client=client)
+
+        with pytest.raises(AIGatewayError):
+            gateway.analyse("Some requirement text.")
+
+        # A 401 will never succeed on retry -- must fail immediately,
+        # not waste two more attempts on a guaranteed failure.
+        assert client.models.generate_content.call_count == 1
