@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BridgeIT — Guide</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+        href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap"
+        rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+</head>
+<body>
+    <div class="spotlight" id="spotlight"></div>
+
+    <div class="sheet">
+        <header class="sheet-header">
+            <div class="header-row">
+                <div class="wordmark">
+                    <img src="assets/logo.png" alt="" class="wordmark-icon" />
+                    BridgeIT
+                </div>
+                <div class="sheet-meta">
+                    <span>Requirements Engineering Console</span>
+                    <span class="sheet-meta-divider">&middot;</span>
+                    <span>Rev. 0.4</span>
+                </div>
+            </div>
+            <nav class="nav">
+                <a href="index.html">Health</a>
+                <a href="create.html">Create</a>
+                <a href="requirements.html">Requirements</a>
+                <a href="analyse.html">Analyse</a>
+                <a href="validate.html">Validate</a>
+                <a href="help.html" class="nav--active">Guide</a>
+            </nav>
+        </header>
+
+        <main class="panel">
+            <p class="eyebrow">Guide</p>
+            <h1>How BridgeIT works</h1>
+            <p class="panel-description">
+                No technical background needed — four short steps take a
+                requirement from a plain-language idea to something IT can
+                build with confidence.
+            </p>
+
+            <ol class="steps">
+                <li class="step">
+                    <span class="step-number">1</span>
+                    <div class="step-body">
+                        <h2>Write it down</h2>
+                        <p>
+                            Go to <strong>Create</strong> and describe what you
+                            need, in your own words — no special format required. It's
+                            saved with status <code>Submitted</code>.
+                        </p>
+                    </div>
+                </li>
+                <li class="step">
+                    <span class="step-number">2</span>
+                    <div class="step-body">
+                        <h2>Get a quick check from Gemini</h2>
+                        <p>
+                            Copy the <code>id</code> you were given, paste it into
+                            <strong>Analyse</strong>, and ask for a quality check. Gemini
+                            either confirms it's ready, or tells you what's missing and
+                            why it matters — a first pass to help you improve it, never
+                            a verdict.
+                        </p>
+                    </div>
+                </li>
+                <li class="step">
+                    <span class="step-number">3</span>
+                    <div class="step-body">
+                        <h2>A Business Analyst reviews it</h2>
+                        <p>
+                            On <strong>Validate</strong>, using that same <code>id</code>,
+                            a Business Analyst makes the real decision:
+                            <strong>Approve</strong> it as-is, <strong>Edit</strong> the
+                            text and send it back for another check, or
+                            <strong>Reject</strong> it.
+                        </p>
+                    </div>
+                </li>
+                <li class="step">
+                    <span class="step-number">4</span>
+                    <div class="step-body">
+                        <h2>Check on it anytime</h2>
+                        <p>
+                            Paste the <code>id</code> into <strong>Requirements</strong>
+                            whenever you want to see its current text and status.
+                        </p>
+                    </div>
+                </li>
+            </ol>
+
+            <h1 class="faq-heading">Frequently asked questions</h1>
+
+            <div class="faq-list">
+                <div class="faq-item">
+                    <button type="button" class="faq-question" data-faq="1" aria-expanded="false" aria-controls="faq-1">
+                        <span>What is this "id" I keep having to copy and paste?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer" id="faq-1">
+                        <div>
+                            <p>
+                                It's just a unique label for your requirement, generated
+                                automatically the moment you submit it — think of it like a
+                                tracking number. Copy it once from the confirmation, and
+                                you'll paste that same code into Analyse, Validate, or View
+                                requirement to keep working on the same one.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question" data-faq="2" aria-expanded="false" aria-controls="faq-2">
+                        <span>Gemini said my requirement "needs clarification" — now what?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer" id="faq-2">
+                        <div>
+                            <p>
+                                Read the list of reasons it gives — each one explains what's
+                                missing and why it matters, so you can either rewrite it
+                                yourself and submit a new one, or bring those specific points
+                                to the Business Analyst review on the Validate page.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question" data-faq="3" aria-expanded="false" aria-controls="faq-3">
+                        <span>Can Gemini reject or approve a requirement by itself?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer" id="faq-3">
+                        <div>
+                            <p>
+                                No. Gemini only ever gives a quality check on the Analyse
+                                page — it never changes a requirement's status. Only an
+                                explicit decision on the Validate page (Approve, Edit, or
+                                Reject) does that.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question" data-faq="4" aria-expanded="false" aria-controls="faq-4">
+                        <span>I chose "Edit" on the Validate page — what happens to my changes?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer" id="faq-4">
+                        <div>
+                            <p>
+                                Your rewritten text replaces the original, and the
+                                requirement moves to a "Clarified" status, ready for another
+                                round of analysis or review with the updated wording.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="faq-item">
+                    <button type="button" class="faq-question" data-faq="5" aria-expanded="false" aria-controls="faq-5">
+                        <span>Do I need any technical knowledge to use this?</span>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer" id="faq-5">
+                        <div>
+                            <p>
+                                No. Everything is written in plain language, on both sides —
+                                what you submit, and what Gemini and the Business Analyst
+                                tell you back. No code, no special syntax.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="sheet-footer">
+            <span>BridgeIT &mdash; Software Engineering, University of Bologna</span>
+        </footer>
+    </div>
+
+    <script src="effects.js"></script>
+    <script src="help.js"></script>
+</body>
+</html>

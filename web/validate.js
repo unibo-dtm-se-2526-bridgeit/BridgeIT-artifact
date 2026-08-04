@@ -1,5 +1,14 @@
 const API_BASE_URL = "http://127.0.0.1:8000";
 
+// Info disclosure (KISS: description hidden by default, one click to
+// reveal instead of always taking up space on the page).
+const infoToggle = document.getElementById("info-toggle");
+const infoPanel = document.getElementById("info-panel");
+infoToggle.addEventListener("click", () => {
+    const isOpen = infoPanel.classList.toggle("is-open");
+    infoToggle.setAttribute("aria-expanded", isOpen ? "true" : "false");
+});
+
 const form = document.getElementById("validate-form");
 const requirementIdInput = document.getElementById("requirement-id");
 const modifiedTextField = document.getElementById("modified-text-field");

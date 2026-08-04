@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BridgeIT — Human Validation</title>
+    <title>BridgeIT — Business Analyst Review</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -34,16 +34,31 @@
                 <a href="requirements.html">Requirements</a>
                 <a href="analyse.html">Analyse</a>
                 <a href="validate.html" class="nav--active">Validate</a>
+                <a href="help.html">Guide</a>
             </nav>
         </header>
         <main class="panel">
-            <p class="eyebrow">Human Validation &middot; FR-05</p>
-            <h1>Record a validation decision</h1>
-            <p class="panel-description">
-                This is the step that makes "AI suggests, the human validates"
-                true: no analysis changes a requirement's status without an
-                explicit decision here.
-            </p>
+            <p class="eyebrow">Business Analyst Review &middot; FR-05</p>
+            <div class="h1-row">
+                <h1>Record a validation decision</h1>
+                <button
+                    type="button"
+                    class="info-toggle"
+                    id="info-toggle"
+                    aria-expanded="false"
+                    aria-controls="info-panel"
+                >i</button>
+            </div>
+            <div class="panel-description--collapsible" id="info-panel">
+                <div>
+                    <p class="panel-description">
+                        This is where a Business Analyst's expertise and deep
+                        understanding of the business make all the difference —
+                        Gemini's analysis is only ever a helpful starting point,
+                        never a substitute for that judgment.
+                    </p>
+                </div>
+            </div>
 
             <form class="form" id="validate-form">
                 <div>

@@ -11,24 +11,32 @@
     rel="stylesheet"
 />
     <link rel="stylesheet" href="style.css" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
 </head>
 <body>
     <div class="spotlight" id="spotlight"></div>
     <div class="sheet">
         <header class="sheet-header">
-            <div class="wordmark">BridgeIT</div>
-            <div class="sheet-meta">
-                <span>Requirements Engineering Console</span>
-                <span class="sheet-meta-divider">&middot;</span>
-                <span>Rev. 0.2</span>
+            <div class="header-row">
+                <div class="wordmark">
+                    <img src="assets/logo.png" alt="" class="wordmark-icon" />
+                    BridgeIT
+                </div>
+                <div class="sheet-meta">
+                    <span>Requirements Engineering Console</span>
+                    <span class="sheet-meta-divider">&middot;</span>
+                    <span>Rev. 0.2</span>
+                </div>
             </div>
+            <nav class="nav">
+                <a href="index.html" class="nav--active">Health</a>
+                <a href="create.html">Create</a>
+                <a href="requirements.html">Requirements</a>
+                <a href="analyse.html">Analyse</a>
+                <a href="validate.html">Validate</a>
+                <a href="help.html">Guide</a>
+            </nav>
         </header>
-
-<nav class="nav">
-    <a href="index.html" class="nav--active">Health</a>
-    <a href="create.html">New requirement</a>
-    <a href="requirements.html">View requirement</a>
-</nav>
 
         <main class="panel">
             <p class="eyebrow">System check</p>

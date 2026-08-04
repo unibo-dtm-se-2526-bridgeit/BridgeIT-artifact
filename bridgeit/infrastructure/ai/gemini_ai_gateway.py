@@ -41,18 +41,25 @@ _RETRYABLE_STATUS_CODES = frozenset({429, 503})
 _MAX_ATTEMPTS = 3
 _RETRY_DELAY_SECONDS = 1.5
 
-_ANALYSIS_PROMPT = """You are a Requirements Engineering assistant. Analyse the \
+_ANALYSIS_PROMPT = """You are a Requirements Engineering assistant helping a Business \
+team member (not a software engineer) write better requirements. Analyse the \
 following software requirement, written in natural language, and reply with \
 ONLY a JSON object (no markdown fences, no extra text) with this exact shape:
 
 {{
   "quality_indication": "ready_for_validation" or "needs_clarification",
-  "issues": ["short string describing issue 1", "short string describing issue 2"]
+  "issues": ["issue 1: what's missing, and why it matters", "issue 2: ..."]
 }}
 
 Use "needs_clarification" if the requirement is ambiguous, incomplete, or \
 lacks a measurable acceptance criterion. Use "ready_for_validation" \
 otherwise. If there are no issues, return an empty list for "issues".
+
+Each issue must teach, not just flag: briefly explain not only what is \
+missing, but why it matters for building the right thing (e.g. why an \
+actor, a measurable condition, or a scope boundary makes the requirement \
+usable) -- in plain language a non-technical reader can learn from, not \
+Software Engineering jargon.
 
 Requirement:
 \"\"\"{requirement_text}\"\"\"

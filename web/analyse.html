@@ -34,17 +34,32 @@
                 <a href="requirements.html">Requirements</a>
                 <a href="analyse.html" class="nav--active">Analyse</a>
                 <a href="validate.html">Validate</a>
+                <a href="help.html">Guide</a>
             </nav>
         </header>
         <main class="panel">
             <p class="eyebrow">AI Analysis &middot; FR-02 / FR-04</p>
-            <h1>Request an AI-assisted analysis</h1>
-            <p class="panel-description">
-                Enter a requirement's <code>id</code> to ask Gemini for a quality
-                indication and any issues it finds. This never changes the
-                requirement on its own — a human still has to validate it
-                afterwards.
-            </p>
+            <div class="h1-row">
+                <h1>Request an AI-assisted analysis</h1>
+                <button
+                    type="button"
+                    class="info-toggle"
+                    id="info-toggle"
+                    aria-expanded="false"
+                    aria-controls="info-panel"
+                >i</button>
+            </div>
+            <div class="panel-description--collapsible" id="info-panel">
+                <div>
+                    <p class="panel-description">
+                        Enter a requirement's <code>id</code> to ask Gemini for a quality
+                        indication and any possible issues — a first pass to help you
+                        improve it, not a verdict. This never changes the requirement
+                        on its own — a Business Analyst's expertise and understanding
+                        of the business are what really decide.
+                    </p>
+                </div>
+            </div>
 
             <form class="form form--inline" id="analyse-form">
                 <div>
@@ -69,7 +84,15 @@
             </div>
 
             <section class="result" id="result" hidden>
-                <h1 id="result-heading">Quality indication</h1>
+                <div class="result-logo-wrap">
+                    <img
+                        src="assets/logo.png"
+                        alt="BridgeIT"
+                        class="result-logo"
+                        id="result-logo"
+                    />
+                </div>
+                <h1 id="result-heading"></h1>
                 <p class="panel-description" id="result-quality"></p>
                 <div id="result-issues"></div>
                 <p class="result-id" id="result-status"></p>
