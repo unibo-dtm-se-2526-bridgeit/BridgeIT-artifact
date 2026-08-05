@@ -350,3 +350,238 @@ body.pointer-active .spotlight {
     body { padding: 2rem 1rem; }
     .sheet-header, .panel { padding-left: 1.4rem; padding-right: 1.4rem; }
 }
+/* Logo icon next to the wordmark text (added alongside the BridgeIT logo) */
+.wordmark {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.wordmark-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 6px;
+    display: block;
+}
+
+/* Result logo (Analyse page): the logo itself is the status signal --
+   complete bridge when ready, unfinished (no deck, no wordmark) when
+   the requirement still needs clarification. See analyse.js. */
+.result-logo-wrap {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.result-logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 18px;
+    transition: opacity 0.3s ease;
+}
+
+.result-issues-intro {
+    font-weight: 600;
+}
+
+/* Result logo (Analyse page): the logo itself is the status signal --
+   complete bridge when ready, unfinished (no deck, no wordmark) when
+   the requirement still needs clarification. See analyse.js. */
+.result-logo-wrap {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.result-logo {
+    width: 96px;
+    height: 96px;
+    border-radius: 18px;
+    transition: opacity 0.3s ease;
+}
+
+.result-issues-intro {
+    font-weight: 600;
+}
+
+/* Info-icon disclosure (KISS: description hidden by default, one click
+   to reveal) -- used next to the h1 on Analyse and Validate. */
+.h1-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.h1-row h1 {
+    margin: 0;
+}
+
+.info-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 1px solid var(--blueprint);
+    color: var(--blueprint);
+    background: transparent;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    line-height: 1;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.info-toggle:hover,
+.info-toggle[aria-expanded="true"] {
+    background: var(--blueprint);
+    color: #fff;
+}
+
+.info-toggle:focus-visible {
+    outline: 2px solid var(--blueprint);
+    outline-offset: 2px;
+}
+
+.panel-description--collapsible {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+    margin: 0 0 1.25rem;
+}
+
+.panel-description--collapsible > div {
+    overflow: hidden;
+}
+
+.panel-description--collapsible.is-open {
+    grid-template-rows: 1fr;
+}
+
+/* Guide page: numbered steps and FAQ accordion. */
+.steps {
+    list-style: none;
+    margin: 0 0 2.5rem;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+.step {
+    display: flex;
+    gap: 1rem;
+    align-items: flex-start;
+}
+
+.step-number {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--blueprint);
+    color: #fff;
+    font-family: var(--font-mono);
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+.step-body h2 {
+    margin: 0 0 0.3rem;
+    font-family: var(--font-display);
+    font-size: 1.02rem;
+    font-weight: 600;
+    color: var(--ink);
+}
+
+.step-body p {
+    margin: 0;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    font-size: 0.93rem;
+}
+
+.faq-heading {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin: 0 0 1rem;
+    color: var(--ink);
+}
+
+.faq-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.faq-item {
+    border: 1px solid var(--card-line);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.faq-question {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.85rem 1rem;
+    background: #fff;
+    border: none;
+    text-align: left;
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    font-weight: 500;
+    color: var(--ink);
+    cursor: pointer;
+}
+
+.faq-question:hover {
+    background: #f4f6f8;
+}
+
+.faq-icon {
+    flex-shrink: 0;
+    font-family: var(--font-mono);
+    color: var(--blueprint);
+    transition: transform 0.2s ease;
+}
+
+.faq-question[aria-expanded="true"] .faq-icon {
+    transform: rotate(45deg);
+}
+
+.faq-answer {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.25s ease;
+}
+
+.faq-answer > div {
+    overflow: hidden;
+}
+
+.faq-answer.is-open {
+    grid-template-rows: 1fr;
+}
+
+.faq-answer p {
+    margin: 0;
+    padding: 0 1rem 0.9rem;
+    color: var(--ink-muted);
+    line-height: 1.55;
+    font-size: 0.9rem;
+}
+
+/* Centers the nav links as a group, with equal spacing between them
+   (requested for readability/consistency across all pages). */
+.nav {
+    justify-content: center;
+}
