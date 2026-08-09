@@ -28,9 +28,9 @@ The platform is designed around four cardinal engineering principles:
 **Completed:**
 - Domain layer: the `Requirement` entity, its value objects, lifecycle transitions, `AIAnalysis`, and the binary `QualityScore`.
 - Persistence: `SQLiteRequirementRepository`, implemented with Python's standard `sqlite3` module and verified with integration tests.
-- Requirement APIs: `POST /requirements` and `GET /requirements/<built-in function id>` (FR-01), with a shared structured API error format.
+- Requirement APIs: `POST /requirements` and `GET /requirements/{requirement_id}` (FR-01), with a shared structured API error format.
 - AI integration: the `AIGateway` port and `GeminiAIGateway` adapter, using `gemini-3.5-flash-lite` and retrying transient 429/503 provider errors.
-- Analysis and validation: `POST /requirements/<built-in function id>/analyse` (FR-02/FR-04) and `POST /requirements/<built-in function id>/validate` (FR-05), backed by dedicated application use cases.
+- Analysis and validation: `POST /requirements/{requirement_id}/analyse` (FR-02/FR-04) and `POST /requirements/{requirement_id}/validate` (FR-05), backed by dedicated application use cases.
 - Frontend: six plain HTML/CSS/JavaScript pages covering health, Requirement creation and visualization, AI Analysis, Business Analyst validation, and help/guidance.
 - Quality and infrastructure: automated tests, coverage measurement, Ruff, Mypy, GitHub Actions, Docker, Docker Compose, and releases through `semantic-release`.
 
