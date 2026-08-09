@@ -8,7 +8,7 @@
 
 ## Project Overview
 
-BridgeIT is a **Requirements Engineering platform** that helps business stakeholders and software engineers transform natural-language requirements into structured software artifacts, while preserving complete traceability between a requirement and everything derived from it.
+BridgeIT is a **Requirements Engineering platform** that helps business stakeholders and software engineers analyse and validate natural-language requirements through an explicit, human-controlled lifecycle. Its architecture is designed to support future traceability between a requirement and derived artifacts, although those stretch features are not part of the current implementation.
 
 Requirements Engineering is one of the most critical and error-prone disciplines in software development: requirements originate as informal, ambiguous natural-language statements, and translating that informal intent into structured, unambiguous, traceable engineering artifacts is a well-documented source of project failure. BridgeIT uses Artificial Intelligence to assist this translation — flagging ambiguity, proposing structure, and suggesting revisions — but AI in BridgeIT never decides autonomously. Every AI-generated suggestion is a proposal that requires explicit human validation before it can affect the authoritative state of a requirement.
 
@@ -23,22 +23,25 @@ The platform is designed around four cardinal engineering principles:
 
 ## Current Status
 
-**BridgeIT's core backend, testing, and CI/CD infrastructure are complete and verified.** The project currently has **26 automated tests at 95% coverage**. What remains is the AI Gateway integration and the human validation workflow (FR-05) — the mechanism that makes the project's central "AI suggests, the human validates" principle real — currently in progress.
+**BridgeIT's core Requirement → AI Analysis → Human Validation flow is now implemented and merged into `master` through PR #23.** The project currently has **58 automated tests**, while the local Pytest suite and static checks complete successfully. BridgeIT remains in active development while final acceptance testing, report completion, and optional stretch features are addressed.
 
 **Completed:**
-- Domain layer: the `Requirement` entity and its value objects, with tested lifecycle transitions.
-- Persistence: a SQLite-based repository (via Python's standard `sqlite3` module — see [ADR-0001](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/master/docs/adr/0001-sqlite-persistence-without-orm.md)), with integration tests confirming real on-disk persistence.
-- APIs: `POST /requirements` and `GET /requirements/{id}` (FR-01), with a shared structured error format across the API.
-- Frontend: a minimal web application in plain HTML/CSS/JavaScript (see [ADR-0002](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/master/docs/adr/0002-vanilla-html-css-js-frontend.md)), with working create/view requirement pages connected to the real backend.
-- CI/CD: a fully functional pipeline (GitHub Actions), including containerization (Docker, Docker Compose) and automatic releases via `semantic-release`.
+- Domain layer: the `Requirement` entity, its value objects, lifecycle transitions, `AIAnalysis`, and the binary `QualityScore`.
+- Persistence: `SQLiteRequirementRepository`, implemented with Python's standard `sqlite3` module and verified with integration tests.
+- Requirement APIs: `POST /requirements` and `GET /requirements/<built-in function id>` (FR-01), with a shared structured API error format.
+- AI integration: the `AIGateway` port and `GeminiAIGateway` adapter, using `gemini-3.5-flash-lite` and retrying transient 429/503 provider errors.
+- Analysis and validation: `POST /requirements/<built-in function id>/analyse` (FR-02/FR-04) and `POST /requirements/<built-in function id>/validate` (FR-05), backed by dedicated application use cases.
+- Frontend: six plain HTML/CSS/JavaScript pages covering health, Requirement creation and visualization, AI Analysis, Business Analyst validation, and help/guidance.
+- Quality and infrastructure: automated tests, coverage measurement, Ruff, Mypy, GitHub Actions, Docker, Docker Compose, and releases through `semantic-release`.
 
-**Not yet implemented:**
-- AI Gateway integration (Gemini API) and AI-assisted requirement analysis (FR-02, FR-04).
-- Human validation of AI suggestions (FR-05) — in progress.
-- Traceability links and derived artifacts (FR-06, FR-07) — planned as a stretch goal if time allows.
-- Frontend pages for AI analysis and human validation (planned once the corresponding backend endpoints exist).
+**Remaining / finalization work:**
+- Run and document the final end-to-end and manual acceptance tests for the complete Requirement → AI Analysis → Human Validation workflow.
+- Complete and align the remaining course-report chapters, user/developer guidance, and individual AI-tool-usage disclosures.
+- Reconcile the operational roadmap and local technical documents with the implementation now present in `master`.
+- Traceability links and derived artifacts (FR-06/FR-07) remain optional stretch goals and are not currently implemented.
+- Authentication/user management, AI-analysis persistence, and AI-response caching are not part of the current implementation.
 
-The full, up-to-date status is maintained in [`docs/RoadMap.md`](./docs/RoadMap.md) and [`docs/report.md`](./docs/report.md#current-development-status), and is expected to evolve incrementally, milestone by milestone, alongside this README.
+The operational plan remains available in [`docs/RoadMap.md`](./docs/RoadMap.md). The authoritative course report is published at [unibo-dtm-se-2526-bridgeit.github.io/report](https://unibo-dtm-se-2526-bridgeit.github.io/report/).
 
 ## Repository Organization
 
@@ -46,7 +49,9 @@ This repository (`artifact`) is part of the [`unibo-dtm-se-2526-bridgeit`](https
 
 ## Project Documentation
 
-The project's documentation lives in the dedicated [`report`](https://github.com/unibo-dtm-se-2526-bridgeit/report) repository, including the Architecture Decision Records under `docs/adr/`. A working copy is also kept locally under [`docs/`](./docs) in this repository for convenience during development; the two are kept in sync.
+The authoritative course report lives in the dedicated [`report`](https://github.com/unibo-dtm-se-2526-bridgeit/report) repository and is published through [GitHub Pages](https://unibo-dtm-se-2526-bridgeit.github.io/report/).
+
+A working copy of the roadmap and implementation-oriented technical documents is also kept under [`docs/`](./docs) in this repository for development convenience. Separate ADR files are not currently maintained; implemented architectural decisions are documented in the report's Design and Development chapters and reflected in the roadmap.
 
 ## Architecture & Documentation
 
@@ -66,8 +71,8 @@ BridgeIT is built in Python and managed with [Poetry](https://python-poetry.org/
 
 ```bash
 # Clone the repository
-git clone <repository-url>
-cd bridgeit
+git clone https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact.git
+cd BridgeIT-artifact
 
 # Install dependencies (creates/uses the project's virtual environment)
 poetry install
@@ -79,7 +84,7 @@ poetry install
 docker compose up
 ```
 
-Once dependencies are installed, the FastAPI service and the minimal frontend (under [`web/`](./web)) can be run locally; see [`docs/report.md` — Roadmap](./docs/report.md#roadmap) for current milestone status.
+Once dependencies are installed, the FastAPI service and the six-page frontend under [`web/`](./web) can be run locally. See [`docs/RoadMap.md`](./docs/RoadMap.md) for the operational plan and the [published report](https://unibo-dtm-se-2526-bridgeit.github.io/report/) for the authoritative project documentation.
 
 ## Quality Assurance
 
