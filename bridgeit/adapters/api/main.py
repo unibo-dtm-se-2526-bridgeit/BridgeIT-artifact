@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from bridgeit.adapters.api.analysis_router import register_analysis_routes
 from bridgeit.adapters.api.errors import ApiError, register_error_handlers
 from bridgeit.application.dto import RequirementCreateRequest, RequirementResponse
-from bridgeit.domain.requirement import Requirement
+from bridgeit.application.use_cases.submit_requirement import SubmitRequirementUseCase
 from bridgeit.infrastructure.ai.gemini_ai_gateway import GeminiAIGateway
 from bridgeit.infrastructure.persistence.sqlite_requirement_repository import (
     SQLiteRequirementRepository,
@@ -29,10 +29,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# TEMPORARY: these routes call the repository directly instead of going
-# through an Application Layer Use Case ("Sottometti requirement"), since
-# that Use Case isn't written yet. Flagged for refactor once it exists:
-# the route should depend on the Use Case, not on infrastructure directly.
 _db_path = Path(__file__).resolve().parents[3] / "bridgeit.db"
 _repository = SQLiteRequirementRepository(_db_path)
 
@@ -52,8 +48,10 @@ def health() -> dict[str, str]:
 @app.post("/requirements", response_model=RequirementResponse, status_code=201)
 def create_requirement(payload: RequirementCreateRequest) -> RequirementResponse:
     """Submit a new requirement (FR-01)."""
-    requirement = Requirement.submit(payload.text)
-    _repository.save(requirement.id, requirement)
+    # Built per-request (not once at module load) so this always uses
+    # whatever _repository currently is -- including the swapped-in test
+    # repository used by the test suite via monkeypatch.
+    requirement = SubmitRequirementUseCase(_repository).execute(payload.text)
     return RequirementResponse(
         id=requirement.id,
         text=requirement.text.content,
