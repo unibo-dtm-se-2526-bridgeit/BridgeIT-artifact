@@ -1,3 +1,9 @@
+## [1.0.1](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.0...bridgeit-v1.0.1) (2026-08-29)
+
+### Bug Fixes
+
+* **ci:** repair semantic-release baseline and workflow ([5b5facf](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/5b5facfb7b78f30fefa4ca000d5e4fa349aceeb4))
+
 ## 1.0.0 (2026-07-17)
 
 ### ⚠ BREAKING CHANGES

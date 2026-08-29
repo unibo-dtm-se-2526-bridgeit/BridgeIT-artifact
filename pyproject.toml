@@ -3,7 +3,7 @@ name = "bridgeit"
 packages = [
     { include = "bridgeit" },
 ]
-version = "1.0.0"
+version = "1.0.1"
 description = "AI-Supported Requirements Engineering Platform — Software Engineering project, University of Bologna"
 authors = [
     "Martina Fava <martina.fava3@studio.unibo.it>",
