@@ -26,6 +26,8 @@ if (pypiToken) {
 }
 
 import config from 'semantic-release-preconfigured-conventional-commits' with {type: 'json'};
+config.tagFormat = "bridgeit-v${version}";
+
 
 config.plugins.push(
     ["@semantic-release/exec", {
@@ -46,7 +48,7 @@ if (!dryRun) {
                 "CHANGELOG.md",
                 "pyproject.toml"
             ],
-            "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+            "message": "chore(release): ${nextRelease.version} [skip ci]"
         }]
     );
 }
