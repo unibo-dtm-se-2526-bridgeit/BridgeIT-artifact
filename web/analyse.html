@@ -24,8 +24,6 @@
                 </div>
                 <div class="sheet-meta">
                     <span>Requirements Engineering Console</span>
-                    <span class="sheet-meta-divider">&middot;</span>
-                    <span>Rev. 0.3</span>
                 </div>
             </div>
             <nav class="nav">
@@ -71,6 +69,9 @@
                         name="requirement-id"
                         placeholder="e.g. a506624b-15d2-459d-babe-d3e0868d2621"
                         required
+                        pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                        title="Enter a valid requirement id, for example: 3a1de6c5-2f2a-4ea0-8409-13e4da08cfe4"
+                        autocomplete="off"
                     />
                 </div>
                 <button class="btn" type="submit" id="analyse-button">

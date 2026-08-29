@@ -18,11 +18,12 @@
     <div class="sheet">
         <header class="sheet-header">
             <div class="header-row">
-                <div class="wordmark">BridgeIT</div>
+                <div class="wordmark">
+                    <img src="assets/logo.png" alt="" class="wordmark-icon" />
+                    BridgeIT
+                </div>
                 <div class="sheet-meta">
                     <span>Requirements Engineering Console</span>
-                    <span class="sheet-meta-divider">&middot;</span>
-                    <span>Rev. 0.4</span>
                 </div>
             </div>
             <nav class="nav">
@@ -45,7 +46,10 @@
                     class="form-input"
                     type="text"
                     placeholder="Paste an id, or submit a new requirement"
-                />
+                        pattern="[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}"
+                        title="Enter a valid requirement id, for example: 3a1de6c5-2f2a-4ea0-8409-13e4da08cfe4"
+                        autocomplete="off"
+                    />
                 <button type="submit" class="btn btn--secondary">Look up</button>
             </form>
 
