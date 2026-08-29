@@ -1,3 +1,9 @@
+## [1.0.2](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.1...bridgeit-v1.0.2) (2026-08-29)
+
+### Bug Fixes
+
+* improve frontend requirement feedback and consistency ([7526a84](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/7526a847e99de2ba14d92e4831d9770e18d2a5df))
+
 ## [1.0.1](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.0...bridgeit-v1.0.1) (2026-08-29)
 
 ### Bug Fixes
