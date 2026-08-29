@@ -64,7 +64,16 @@ form.addEventListener("submit", async (event) => {
         const data = await response.json();
 
         if (!response.ok) {
-            const message = data && data.error ? data.error.message : "Request failed.";
+            const message =
+                response.status === 404
+                    ? "Requirement not found. Check the requirement id and try again."
+                    : response.status === 409
+                      ? "This validation decision is not allowed for the requirement's current status."
+                      : response.status === 400 || response.status === 422
+                        ? "The request is incomplete or invalid. Check the entered data and try again."
+                        : data && data.error && data.error.message
+                          ? data.error.message
+                          : "Request failed. Please try again.";
             setStamp("error", message);
             return;
         }
