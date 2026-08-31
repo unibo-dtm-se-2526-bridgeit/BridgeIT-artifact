@@ -140,7 +140,7 @@ Alternatively, the application can be started using Docker Compose:
 docker compose up
 ```
 
-Complete installation, configuration, and deployment instructions are available in the project report.
+Complete installation, configuration, and deployment instructions are available in the report's [**Developer Guide**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/10-devguide/index.md) and [**Deployment**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/07-deployment/index.md) chapters.
 
 ## Validation
 
@@ -158,11 +158,11 @@ The manual acceptance checks cover:
 - rejection of an invalid analysis request after a Requirement has reached `Validated`;
 - availability of the frontend Guide.
 
-Detailed validation evidence is available in the project's **Validation** chapter.
+Detailed validation evidence is available in the report's [**Validation**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/05-validation/index.md) chapter.
 
 ## Current Scope
 
-The final implementation deliberately prioritizes the complete:
+The current implementation prioritizes the complete:
 
 **Requirement → AI Analysis → Human Validation**
 
@@ -175,6 +175,8 @@ The following capabilities are outside the implemented core version and remain p
 - persistence and caching of AI-analysis results;
 - richer traceability-link management;
 - derived artifact generation.
+
+This prioritization reflects the scope implemented and validated to date. The team is awaiting instructor feedback on whether any additional capabilities should be included before final submission. See the report's [**Future Work**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/12-future/index.md) chapter for the documented extension opportunities.
 
 ## Release
 
@@ -193,6 +195,15 @@ The authoritative Software Engineering report is maintained in the dedicated rep
 - [GitHub organization](https://github.com/unibo-dtm-se-2526-bridgeit)
 
 The report documents the project concept, requirements, architecture, implementation, validation, release process, deployment, CI/CD, user workflow, developer setup, and future work.
+
+Useful direct links:
+
+- [**Design**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/03-design/index.md)
+- [**Development**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/04-development/index.md)
+- [**Validation**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/05-validation/index.md)
+- [**User Guide**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/09-userguide/index.md)
+- [**Developer Guide**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/10-devguide/index.md)
+- [**Future Work**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/12-future/index.md)
 
 ## License
 
