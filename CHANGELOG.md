@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.2...bridgeit-v1.0.3) (2026-09-09)
+
+### Documentation
+
+* refine README scope wording and report links ([ac337eb](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/ac337eb802171b6946b898ca7c5ef2636f72bc75))
+* update artifact README to final project status ([1371e4a](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/1371e4a1de02c2d21915e190733eca1f663eca21))
+
 ## [1.0.2](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.1...bridgeit-v1.0.2) (2026-08-29)
 
 ### Bug Fixes
