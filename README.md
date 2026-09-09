@@ -182,7 +182,7 @@ This prioritization reflects the scope implemented and validated to date. The te
 
 Latest release:
 
-**`bridgeit-v1.0.2`**
+**`bridgeit-v1.0.3`**
 
 The release process is automated through GitHub Actions and semantic-release.
 
