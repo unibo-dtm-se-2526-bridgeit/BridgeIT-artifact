@@ -13,10 +13,25 @@ demo/
 *.jar
 
 ### Python ###
-# Byte-compiled / optimized / DLL files
+
 __pycache__/
 *.py[cod]
 *$py.class
+
+.venv/
+venv/
+env/
+ENV/
+
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+.coverage
+.coverage.*
+htmlcov/
+
+bridgeit.db
 
 # C extensions
 *.so
