@@ -1,189 +1,314 @@
 # BridgeIT — Architecture
 
-**Status:** Preliminary — reflects intended design direction, not implemented code (see [report.md — Current Development Status](report.md#current-development-status))
+**Status:** Current implementation architecture — updated to reflect the artifact at release `bridgeit-v1.0.3`.
 
-This document is the single authoritative reference for BridgeIT's architecture. It is referenced, not duplicated, by [report.md](report.md) and [domain-model.md](domain-model.md), consistent with the project's documentation structure.
-
-Unless explicitly marked otherwise, the descriptions below are written as design commitments — statements of how the architecture is intended to behave — not as claims that this behavior is already implemented. For what currently exists in the repository, see [report.md — Current Development Status](report.md#current-development-status).
+This document describes the architecture that is actually present in the repository. The final course report contains the broader project discussion; this file focuses on the implementation structure of the artifact.
 
 ---
 
 ## Architectural Principles
 
-BridgeIT's architecture is planned around a small set of well-established architectural principles, described here at a conceptual level. No implementation classes are included at this stage; the architecture will be documented in greater depth as it is actually implemented.
+BridgeIT follows **Hexagonal Architecture (Ports and Adapters)** together with **Domain-Driven Design**.
 
-- **Hexagonal Architecture (Ports and Adapters)** — The core application logic is isolated from external technical concerns (web framework, database, AI provider) behind explicit ports, with adapters implementing those ports for specific technologies. This is what allows the domain to be tested and reasoned about independently of any particular infrastructure choice. It is also the primary mechanism through which BridgeIT satisfies the Dependency Inversion Principle (the "D" in SOLID); the precise dependency direction this implies is stated in full in [Dependency Rules](#dependency-rules) below.
+The main goal is to keep the Requirements Engineering domain independent from technical concerns such as HTTP, SQLite, and the external AI provider.
 
-- **Domain-Driven Design** — The system is organized around an explicit domain model representing the core concepts of the Requirements Engineering process, rather than around technical or database-driven structures. Domain logic is expressed in terms meaningful to the Requirements Engineering domain itself. The full domain model — entities, value objects, the aggregate boundary, and domain rules — is documented in [domain-model.md](domain-model.md).
+The implementation is organized around the following principles:
 
-- **Repository Pattern** — Persistence concerns are abstracted behind a repository interface (a port), expressed in terms meaningful to the domain, so that persistence technology never leaks into business logic. Consistent with the Application Layer below, it is that layer — not the domain layer itself — that depends on and invokes this repository port; the domain layer remains free of any outgoing dependency, including to its own persistence abstraction.
-
-- **Application Layer (Service Layer pattern)** — Application-level use cases are coordinated through a service layer that orchestrates domain objects and repositories, keeping orchestration logic distinct from both the domain model and the infrastructure adapters. This separation is also what keeps each layer independently testable, per NFR-02 (Testability).
-
-- **AI Gateway** — Access to AI capabilities (e.g., the Gemini API) is mediated through a dedicated gateway abstraction, invoked by the application layer rather than the domain, and detailed further in [AI Architecture](#ai-architecture) below.
+- **Domain independence** — the domain layer contains the `Requirement` aggregate root and its value objects and has no dependency on FastAPI, SQLite, or the Gemini SDK.
+- **Application orchestration** — application use cases coordinate domain objects, persistence, and AI capabilities through explicit ports.
+- **Ports and adapters** — persistence and AI-provider details are implemented by driven adapters, while FastAPI acts as the driving adapter for HTTP requests.
+- **Dependency inversion** — the application layer depends on abstractions such as `RequirementRepository` and `AIGateway`; concrete infrastructure implementations depend on those abstractions.
+- **Human-in-the-loop** — AI analysis is advisory. The AI provider never directly records the authoritative human validation outcome.
 
 ---
 
 ## Dependency Rules
 
-BridgeIT's layering is governed by a small set of dependency rules, consistent with Hexagonal Architecture and the Dependency Inversion Principle introduced above:
+The current codebase follows these dependency rules:
 
-- **Dependencies point inward.** Outer layers (driving adapters, driven adapters) depend on inner layers (application, domain) — never the reverse. A driven adapter (e.g., a persistence or Gemini adapter) depends on the port it implements; it is never depended upon by the layer that port belongs to.
-- **The domain layer is independent.** The domain layer depends on nothing outside itself — no web framework, no persistence technology, no AI provider. It expresses business rules only, in terms meaningful to the Requirements Engineering domain (see [domain-model.md](domain-model.md)).
-- **Infrastructure adapters depend on abstractions, not the other way around.** Both driving and driven adapters depend on ports defined by the application or domain layer. Neither the domain nor the application layer imports or references a specific adapter implementation (e.g., FastAPI, a specific persistence library, or the Gemini SDK).
+- `bridgeit/domain/` does not import infrastructure or framework-specific code.
+- `bridgeit/application/` depends on domain objects and abstract ports, not on concrete adapters.
+- `bridgeit/infrastructure/` implements application-layer ports using concrete technologies such as `sqlite3` and `google-genai`.
+- `bridgeit/adapters/api/` translates HTTP requests into application-layer operations and translates results and errors back into HTTP responses.
 
-These rules are what make the AI Gateway's positioning in [AI Architecture](#ai-architecture) possible: because dependencies only point inward, the domain remains wholly unaware that AI-assisted analysis exists as a capability, while the application layer — one step further out — is the one permitted to depend on it.
-
-This section states a principle to be upheld during implementation; how it will be enforced (e.g., through code review, import-linting, or module boundaries) is a decision left open for when Milestone 2 (Domain Model) begins.
+This structure allows the domain logic to be tested without requiring a database or a live Gemini connection.
 
 ---
 
-## Layered View (Conceptual Diagram)
+## Layered View
 
-The diagram below illustrates how the architectural principles above relate to one another. It shows architectural layers and their direction of dependency only — no classes, modules, or implementation details are implied.
+The implemented dependency structure can be summarized as follows:
 
-```
- ┌──────────────────────────────────────────────────────────┐
- │                     DRIVING ADAPTERS                       │
- │            (inbound — e.g. future FastAPI controllers)     │
- └──────────────────────────┬───────────────────────────────┘
-                             │  calls, via an inbound port
-                             ▼
- ┌──────────────────────────────────────────────────────────┐
- │                     APPLICATION LAYER                      │
- │       (use cases / service-layer orchestration)            │
- └──────┬─────────────────────┬─────────────────────┬───────┘
-        │ uses, via a          │ uses, via a          │ uses, via the
-        │ domain port          │ repository port      │ AI Gateway port
-        ▼                      ▼                      ▼
- ┌───────────────────┐  ┌───────────────────┐  ┌───────────────────┐
- │    DOMAIN LAYER      │  │  DRIVEN ADAPTERS     │  │     AI GATEWAY        │
- │ (aggregate root,     │  │ (e.g. future         │  │ (abstraction over     │
- │  entities, value      │  │  Database Adapter)   │  │  an external AI       │
- │  objects, business    │  └───────────────────┘  │  provider)            │
- │  rules — see           │                          └──────────┬────────────┘
- │  domain-model)          │                                     │ delegates, via
- └───────────────────┘                                          │ an adapter
-                                                                    ▼
-                                                        ┌───────────────────┐
-                                                        │  DRIVEN ADAPTERS     │
-                                                        │ (e.g. future Gemini  │
-                                                        │  Adapter)            │
-                                                        └───────────────────┘
+```text
+                 HTTP client / browser
+                         |
+                         v
+              +------------------------+
+              | FastAPI API adapter    |
+              | adapters/api/          |
+              +-----------+------------+
+                          |
+                          v
+              +------------------------+
+              | Application layer      |
+              | use_cases/ + ports/    |
+              +-----+-------------+----+
+                    |             |
+             domain |             | ports
+                    v             v
+          +----------------+   +----------------------+
+          | Domain layer   |   | Driven adapters      |
+          | Requirement    |   | SQLite repository    |
+          | value objects  |   | Gemini AI gateway    |
+          +----------------+   +----------------------+
 ```
 
-- **Driving adapters** (e.g., future FastAPI controllers) are the entry points that trigger application behavior. They depend on the application layer, never the reverse.
-- **Application layer** coordinates use cases (e.g., "submit a requirement", "request an analysis") by orchestrating domain objects and invoking ports — including the repository port and the AI Gateway port; it contains no business rules of its own.
-- **Domain layer** holds the aggregate root, entities, value objects, and business rules that define what a requirement and its lifecycle actually mean, independent of any technical detail. It has no outgoing dependency of its own: persistence and AI access are invoked by the application layer, not by the domain. Its full conceptual model is documented in [domain-model.md](domain-model.md), not repeated here.
-- **Driven adapters** (e.g., a future Database Adapter, a future Gemini Adapter) implement the ports required by the application layer, and are the only layer aware of specific external technologies.
+The frontend in `web/` is a separate static client. It communicates with the FastAPI service through HTTP requests and does not contain domain logic.
 
-This layering reflects intended design direction only. None of the boxes shown above currently exist as implemented code; see [report.md — Current Development Status](report.md#current-development-status) for what has actually been built so far.
+---
+
+## Actual Package Structure
+
+The repository currently contains the following relevant structure:
+
+```text
+bridgeit/
+├── domain/
+│   ├── requirement.py
+│   └── ai_analysis.py
+├── application/
+│   ├── dto.py
+│   ├── ports/
+│   │   ├── ai_gateway.py
+│   │   └── requirement_repository.py
+│   └── use_cases/
+│       ├── submit_requirement.py
+│       ├── analyse_requirement.py
+│       └── validate_requirement.py
+├── adapters/
+│   └── api/
+│       ├── main.py
+│       ├── analysis_router.py
+│       └── errors.py
+└── infrastructure/
+    ├── ai/
+    │   └── gemini_ai_gateway.py
+    └── persistence/
+        └── sqlite_requirement_repository.py
+
+tests/
+├── domain/
+├── application/
+├── infrastructure/
+└── adapters/
+
+web/
+├── index.html
+├── create.html
+├── requirements.html
+├── analyse.html
+├── validate.html
+└── help.html
+```
+
+The test suite mirrors the main implementation areas rather than being split into separate `unit/`, `integration/`, and `acceptance/` directories.
+
+---
+
+## Domain Layer
+
+The domain layer is implemented in pure Python.
+
+The main aggregate root is `Requirement`. It contains:
+
+- a unique identifier;
+- the current `RequirementText`;
+- the current `RequirementStatus`.
+
+The requirement lifecycle is explicitly enforced by the domain state machine:
+
+```text
+Submitted
+    |
+    v
+Analyzed -----> Validated
+    |
+    +---------> Rejected
+    |
+    v
+Clarified
+    |
+    v
+Analyzed
+```
+
+`Validated` and `Rejected` are terminal states in the current implementation.
+
+A clarification replaces the current requirement text and moves the requirement to `Clarified`; the next valid operation is a new AI analysis, which moves it back to `Analyzed`.
+
+---
+
+## Application Layer and Ports
+
+The application layer contains the main use cases:
+
+- `SubmitRequirementUseCase`
+- `AnalyseRequirementUseCase`
+- `ValidateRequirementUseCase`
+
+The main ports are:
+
+- `RequirementRepository` — persistence abstraction;
+- `AIGateway` — abstraction over the AI provider.
+
+The application layer therefore orchestrates the following flow:
+
+```text
+Requirement
+    |
+    +--> repository
+    |
+    +--> AI Gateway
+    |
+    +--> human validation decision
+```
+
+Requirement retrieval through `GET /requirements/{id}` is currently implemented as a small API-level read operation directly against the repository instead of a dedicated application use case. This is intentionally lightweight but remains a possible future refactoring.
+
+---
+
+## Persistence Adapter
+
+The current persistence adapter is `SQLiteRequirementRepository` and uses Python's standard `sqlite3` module directly.
+
+The database table stores the current requirement state:
+
+| Column | Meaning |
+|---|---|
+| `id` | Unique requirement identifier |
+| `text` | Current requirement text |
+| `status` | Current lifecycle status |
+
+The previous versions of a requirement are not persisted. When `Edit` is selected, the current text is replaced and the same requirement id is retained.
+
+Persistence is hidden behind the `RequirementRepository` port, so the rest of the application is independent from SQLite.
 
 ---
 
 ## AI Architecture
 
-A recurring risk in AI-augmented systems is allowing an external AI provider to become an implicit dependency of the domain itself — for example, by shaping domain entities around a specific provider's response format, or by letting the provider's output directly mutate domain state. BridgeIT's architecture is explicitly designed to avoid this.
+BridgeIT integrates Google Gemini through `GeminiAIGateway`, which implements the `AIGateway` port.
 
-Three points follow directly from the Hexagonal Architecture principles above:
+The dependency chain is:
 
-- **Gemini API is an infrastructure concern.** The Gemini API is treated as an external technical detail, on the same architectural footing as a database or a message broker — not as part of the domain.
-- **The domain model must remain independent from Gemini — and from the AI Gateway itself.** No domain entity, value object, or business rule (see [domain-model.md](domain-model.md)) references Gemini, the AI Gateway, or any provider-specific concept. Requesting an AI-assisted analysis is a use case coordinated by the **application layer**, not a capability the domain invokes on its own; the domain only ever sees the resulting `AI Analysis` once it is presented back for human validation.
-- **The AI Gateway is the abstraction boundary between the application and external AI providers.** The application layer depends on the AI Gateway port, not on Gemini directly. The Gemini Adapter is one possible implementation of that port.
-- **Future AI providers could replace Gemini without changing domain or application-layer logic.** Because the dependency runs from the Gemini Adapter toward the AI Gateway port (and not the reverse), replacing Gemini with a different provider is expected to require only a new adapter implementing the same port.
-
-This relationship can be summarized as a simple dependency chain:
-
-```
+```text
 Application Layer
-        |
-        |  depends on (via an abstraction)
-        v
-AI Gateway Port
-        |
-        |  implemented by
-        v
-Gemini Adapter
+       |
+       v
+AIGateway port
+       |
+       v
+GeminiAIGateway
+       |
+       v
+Google Gemini API
 ```
 
-The **Application Layer** depends only on the AI Gateway Port; the Gemini Adapter depends on that same port from the other side, fulfilling it. The **Domain Layer has no dependency on the AI Gateway at all** — it is the application layer's responsibility to invoke the port when orchestrating a use case (e.g., "analyze a requirement"), and to apply the resulting AI Analysis to the Requirement only through the explicit human-validation operation described in [domain-model.md](domain-model.md#aggregate-boundary).
+The Gemini adapter translates the external provider response into the domain-level `AIAnalysis` object. The current `AIAnalysis` contains a qualitative `QualityScore` and a tuple of textual issues.
 
-This keeps the domain focused purely on business rules, and makes the AI provider replaceable in principle without touching either the domain or the application layer's use-case logic — only the adapter changes. This design is consistent with the project's [AI Philosophy](report.md#ai-philosophy): AI is treated as a replaceable, external capability, never as an autonomous decision-maker embedded in the domain.
+AI analysis is **not persisted** as an independent database record. It is returned to the client as part of the analysis response and causes the Requirement to enter the `Analyzed` state. The final validation decision is still made explicitly through the validation use case.
 
----
-
-## Proposed Package Structure
-
-The structure below is a **proposed** organization for the `bridgeit` Python package, illustrating how the [Dependency Rules](#dependency-rules) above could be reflected in the codebase. It is **not implemented**: the current repository contains only the initialized package with no internal structure yet (see [report.md — Current Development Status](report.md#current-development-status)). The actual structure may differ once Milestone 2 begins, and this section will be corrected to match it at that point.
-
-```
-bridgeit/
-├── domain/            # Entities, value objects, business rules — no external imports
-├── application/        # Use cases, service-layer orchestration, port interfaces
-├── infrastructure/
-│   ├── persistence/    # Repository adapter(s) implementing a persistence port
-│   └── ai/             # Gemini adapter implementing the AI Gateway port
-├── adapters/
-│   └── api/            # FastAPI driving adapter (routes, request/response translation)
-└── tests/
-    ├── unit/            # Domain and application logic in isolation
-    ├── integration/      # Adapters against real or realistic infrastructure
-    └── acceptance/       # End-to-end scenarios against the full application
-```
-
-`domain/` and `application/` contain no dependency on `infrastructure/` or `adapters/`; the reverse dependency is what the Dependency Rules above require. This structure is deliberately shallow and avoids additional enterprise-style subdivision (e.g., separate command/query modules, or a dedicated "core" package) beyond what the project's current scope justifies.
-
----
-
-## Adapter Responsibilities
-
-The table below describes the intended responsibility of each adapter identified so far. None of these adapters are implemented yet; responsibilities are expected to be realized starting with Milestone 3 (Requirement Management) and Milestone 4 (AI Gateway) (see [report.md — Roadmap](report.md#roadmap)).
-
-| Adapter | Kind | Responsibility |
-|---|---|---|
-| **FastAPI driving adapter** | Driving | Translates incoming HTTP requests into calls to application-layer use cases, and use-case results back into HTTP responses. Performs request/response translation and transport-level input validation only — it contains no business rules. |
-| **Repository persistence adapter** | Driven | Implements the persistence port defined by the application/domain layer, translating a Requirement (and related objects) to and from whatever storage mechanism is chosen, without leaking that mechanism's details back into the domain. |
-| **Gemini AI adapter** | Driven | Implements the AI Gateway port by translating an analysis request into a call to the Gemini API, and the provider's response back into a domain-meaningful `AI Analysis` (see [domain-model.md](domain-model.md)). All Gemini-specific request/response handling is contained here; no other layer is aware of it. |
+Transient provider failures such as HTTP `429` and `503` responses are handled through the bounded retry policy implemented in the Gemini adapter.
 
 ---
 
 ## API Design
 
-The platform is expected to expose its functional capabilities through an HTTP API, once the application and driving-adapter layers are implemented. The following endpoints are illustrative examples of the intended API surface, aligned with the functional requirements in [report.md](report.md#functional-requirements) — they represent design intent, not an implemented or finalized contract.
+The current HTTP API exposes these operations:
 
-```
-POST /requirements
-GET  /requirements/{id}
-POST /requirements/{id}/analyse
-POST /requirements/{id}/validate
-GET  /requirements/{id}/traceability-links
-POST /requirements/{id}/artifacts
-```
+| Method | Endpoint | Purpose |
+|---|---|---|
+| `GET` | `/health` | Check that the backend is running |
+| `POST` | `/requirements` | Create a requirement |
+| `GET` | `/requirements/{id}` | Retrieve a requirement |
+| `POST` | `/requirements/{id}/analyse` | Request an AI analysis |
+| `POST` | `/requirements/{id}/validate` | Record a human decision |
 
-- `POST /requirements` is expected to correspond to **FR-01** (Requirement Creation).
-- `GET /requirements/{id}` is expected to support retrieval of a requirement's current state, including its quality indication and traceability links.
-- `POST /requirements/{id}/analyse` is expected to correspond to **FR-02** (AI-Assisted Requirement Analysis).
-- `POST /requirements/{id}/validate` is expected to correspond to **FR-05** (Human Validation of AI Suggestions), recording an explicit approve/edit/reject decision on a pending AI Analysis.
-- `GET /requirements/{id}/traceability-links` is expected to correspond to **FR-06** (Traceability Link Management), returning the Traceability Links associated with a Requirement.
-- `POST /requirements/{id}/artifacts` is expected to correspond to **FR-07** (Derived Artifact Creation), creating a Derived Artifact from a validated Requirement.
+FastAPI also generates OpenAPI documentation automatically while the backend is running.
 
-Formal API documentation (OpenAPI/Swagger, generated automatically once FastAPI routes are implemented) will be introduced during development and referenced from this section once available. No API is implemented at the current stage of the project.
+The following endpoints are **not implemented** in the current release:
 
----
+- `GET /requirements/{id}/traceability-links`
+- `POST /requirements/{id}/artifacts`
 
-## Architecture Decision Records
-
-Significant architectural decisions — for example, choosing a specific persistence technology, or revisiting the placement of the AI Gateway — will be captured as lightweight Architecture Decision Records (ADRs) once such decisions are actually made, rather than documented speculatively in advance.
-
-Each ADR is expected to follow a minimal, standard structure: a short title, the context that motivated the decision, the decision itself, and its consequences. ADRs will be stored under `docs/adr/`, numbered sequentially (e.g., `0001-adoption-of-hexagonal-architecture.md`), and are not rewritten after acceptance — superseding an earlier decision means adding a new ADR that references it, preserving a historical record of how the architecture evolved.
-
-No ADR exists yet, consistent with the project's current Milestone 1 (initialization only) status (see [report.md — Current Development Status](report.md#current-development-status)). The first ADR is expected once an architectural decision is actually made, during Milestone 2 or later.
+These correspond to the future Traceability and Derived Artifact capabilities discussed in the final report.
 
 ---
 
-## Relationship to Other Documents
+## Error Handling
 
-- [report.md](report.md) — project vision, requirements, workflow, methodology, and current status.
-- [domain-model.md](domain-model.md) — the conceptual domain model (entities, value objects, aggregate boundary, domain rules) referenced by the Domain Layer above.
+API errors use a common `ApiError` structure:
 
-This document will be revised, rather than duplicated, whenever architectural decisions evolve; significant changes are additionally expected to be captured as an [Architecture Decision Record](#architecture-decision-records), per the section above.
+```json
+{
+  "error": {
+    "code": "...",
+    "message": "..."
+  }
+}
+```
+
+The same format is used for requirement-not-found errors, invalid state transitions, invalid validation data, and AI-provider failures.
+
+---
+
+## Frontend
+
+The frontend is implemented in **plain HTML, CSS, and JavaScript**, with no framework and no build system.
+
+The six available pages are:
+
+1. Health
+2. Create
+3. Requirements
+4. Analyse
+5. Validate
+6. Guide
+
+The frontend communicates with the backend through the REST endpoints using `fetch()` and does not directly access the persistence layer or Gemini.
+
+---
+
+## CI/CD and Release
+
+GitHub Actions currently performs:
+
+1. dependency installation through Poetry;
+2. syntax compilation;
+3. Ruff static checks;
+4. Mypy static type checking;
+5. formatting verification;
+6. the automated test suite with coverage;
+7. a cross-platform test matrix on Ubuntu, Windows, and macOS using Python 3.10–3.13;
+8. the semantic-release process after successful checks.
+
+The current release format is:
+
+`bridgeit-v<version>`
+
+The latest artifact release is `bridgeit-v1.0.3`.
+
+---
+
+## Architecture Limitations
+
+The current architecture intentionally leaves several capabilities outside the implemented core:
+
+- authentication and authorization;
+- persistent AI-analysis history;
+- traceability links;
+- derived artifacts;
+- structured domain-event logging for observability;
+- a dedicated application use case for requirement retrieval.
+
+These are documented as future improvements rather than as implemented features.
