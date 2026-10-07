@@ -1,3 +1,9 @@
+## [1.0.5](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.4...bridgeit-v1.0.5) (2026-10-07)
+
+### Bug Fixes
+
+* address review findings (validate 404, docker compose, edit flow, AI call order) ([58b2b00](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/58b2b00cb4f497ab15f5d55ec8075d17a17f4cd0))
+
 ## [1.0.4](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.3...bridgeit-v1.0.4) (2026-10-07)
 
 ### Documentation
