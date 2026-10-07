@@ -1,3 +1,13 @@
+## [1.0.4](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.3...bridgeit-v1.0.4) (2026-10-07)
+
+### Documentation
+
+* update latest release to 1.0.3 ([089f43e](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/089f43e777387482bda07d077101467bb9a5f7a3))
+
+### General maintenance
+
+* clean up and optimize .gitignore ([5aa24e7](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/5aa24e79ccb1a6425ef23975d0a8e6440abffd98))
+
 ## [1.0.3](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.2...bridgeit-v1.0.3) (2026-09-09)
 
 ### Documentation
