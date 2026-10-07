@@ -7,7 +7,7 @@
   "assignees": [
     "marthinaf03"
   ],
-  "automerge": true,
+  "automerge": false,
   "dependencyDashboard": true,
   "git-submodules": {
     "enabled": true

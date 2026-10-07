@@ -1,11 +1,12 @@
+import os
 from pathlib import Path
 
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from bridgeit.adapters.api.analysis_router import register_analysis_routes
+from bridgeit.adapters.api.dto import RequirementCreateRequest, RequirementResponse
 from bridgeit.adapters.api.errors import ApiError, register_error_handlers
-from bridgeit.application.dto import RequirementCreateRequest, RequirementResponse
 from bridgeit.application.use_cases.submit_requirement import SubmitRequirementUseCase
 from bridgeit.infrastructure.ai.gemini_ai_gateway import GeminiAIGateway
 from bridgeit.infrastructure.persistence.sqlite_requirement_repository import (
@@ -29,7 +30,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-_db_path = Path(__file__).resolve().parents[3] / "bridgeit.db"
+# Database location: BRIDGEIT_DB_PATH if set (used by Docker Compose to
+# keep the file in a mounted volume), otherwise bridgeit.db in the
+# repository root.
+_db_path = Path(
+    os.environ.get(
+        "BRIDGEIT_DB_PATH",
+        str(Path(__file__).resolve().parents[3] / "bridgeit.db"),
+    )
+)
+_db_path.parent.mkdir(parents=True, exist_ok=True)
 _repository = SQLiteRequirementRepository(_db_path)
 
 # AI Gateway (Milestone 5): constructed once here, same style as

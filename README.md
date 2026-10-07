@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-core%20workflow%20implemented-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![Release](https://img.shields.io/badge/release-bridgeit--v1.0.3-blue)
+![Release](https://img.shields.io/github/v/release/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact)
 ![License](https://img.shields.io/badge/license-Apache%202.0-lightgrey)
 
 > AI-Supported Requirements Engineering Platform — University of Bologna Software Engineering Project (A.Y. 2025/2026)
@@ -11,7 +11,7 @@
 
 BridgeIT is a Requirements Engineering platform that supports the lifecycle of natural-language software requirements through AI-assisted quality analysis and explicit human validation.
 
-The project follows a **human-in-the-loop** principle: Google Gemini can identify quality issues and support requirement refinement, but it cannot autonomously approve, modify, reject, or otherwise determine the authoritative state of a requirement. The final decision remains under explicit Business Analyst control.
+The project follows a **human-in-the-loop** principle: Google Gemini can identify quality issues and support requirement refinement, but it cannot autonomously approve, modify, reject, or otherwise determine the authoritative state of a requirement. The final decision remains under explicit Requirements Engineer control.
 
 ## Current Status
 
@@ -19,7 +19,7 @@ The core BridgeIT workflow is implemented and has been validated end-to-end.
 
 A requirement starts in:
 
-`Submitted` → `Analyzed` → explicit Business Analyst decision
+`Submitted` → `Analyzed` → explicit Requirements Engineer decision
 
 The human decision can then produce one of three outcomes:
 
@@ -40,7 +40,7 @@ The `Edit` → `Clarified` → `Analyse` refinement cycle can be repeated before
 - SQLite persistence through the `RequirementRepository` port and Python's standard `sqlite3` module;
 - AI-assisted requirement analysis through an abstract `AIGateway`;
 - Google Gemini integration through `GeminiAIGateway`;
-- explicit Business Analyst approval, clarification/editing, and rejection;
+- explicit Requirements Engineer approval, clarification/editing, and rejection;
 - lifecycle enforcement for invalid state transitions;
 - shared structured API error handling;
 - six-page HTML/CSS/JavaScript frontend:
@@ -109,7 +109,7 @@ It contains six pages:
 2. **Create** — submit a new Requirement;
 3. **Requirements** — retrieve and inspect a Requirement;
 4. **Analyse** — request AI-assisted quality analysis;
-5. **Validate** — record the Business Analyst decision;
+5. **Validate** — record the Requirements Engineer decision;
 6. **Guide** — provide workflow guidance and help.
 
 ## Development Setup
@@ -134,10 +134,11 @@ Run static verification with:
 poetry run poe static-checks
 ```
 
-Alternatively, the application can be started using Docker Compose:
+Alternatively, the application can be started using Docker Compose (the Gemini key is read from your shell or from a `.env` file, and the database is kept in `./data/`):
 
 ```bash
-docker compose up
+export GEMINI_API_KEY=your-key   # Windows PowerShell: $env:GEMINI_API_KEY="your-key"
+docker compose up --build
 ```
 
 Complete installation, configuration, and deployment instructions are available in the report's [**Developer Guide**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/10-devguide/index.md) and [**Deployment**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/07-deployment/index.md) chapters.
@@ -173,16 +174,14 @@ The following capabilities are outside the implemented core version and remain p
 - authentication and user management;
 - authorization policies;
 - persistence and caching of AI-analysis results;
-- richer traceability-link management;
+- traceability-link management;
 - derived artifact generation.
 
 This prioritization reflects the scope implemented and validated in the current release. See the report's [**Future Work**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/12-future/index.md) chapter for the documented extension opportunities.
 
 ## Release
 
-Latest release:
-
-**`bridgeit-v1.0.3`**
+Releases are published on the [GitHub Releases page](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/releases); the latest version is shown by the badge at the top of this file and in `CHANGELOG.md`.
 
 The release process is automated through GitHub Actions and semantic-release.
 

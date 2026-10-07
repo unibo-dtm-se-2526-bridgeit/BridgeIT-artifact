@@ -8,9 +8,9 @@ class InMemoryRequirementRepository(RequirementRepository):
     Used to verify, in tests, that a concrete implementation can satisfy the
     port's contract, and to test Application Layer logic without depending
     on any real persistence technology. Lives under tests/ because it is a
-    test double, not production code: a future SQLiteRequirementRepository
-    (Week 2) will implement the same port for real, durable storage, under
-    infrastructure/persistence/.
+    test double, not production code: SQLiteRequirementRepository, under
+    infrastructure/persistence/, implements the same port for real,
+    durable storage.
     """
 
     def __init__(self) -> None:

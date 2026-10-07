@@ -9,7 +9,11 @@ from bridgeit.application.use_cases.analyse_requirement import (
     RequirementNotFoundError,
 )
 from bridgeit.domain.ai_analysis import AIAnalysis, QualityScore
-from bridgeit.domain.requirement import Requirement, RequirementStatus
+from bridgeit.domain.requirement import (
+    InvalidStateTransitionError,
+    Requirement,
+    RequirementStatus,
+)
 from tests.application.fakes import InMemoryRequirementRepository
 
 
@@ -60,3 +64,22 @@ class TestAnalyseRequirementUseCase:
 
         with pytest.raises(RequirementNotFoundError):
             use_case.execute("does-not-exist")
+
+    def test_does_not_call_the_ai_gateway_when_analysis_is_not_allowed(
+        self,
+    ) -> None:
+        repository = InMemoryRequirementRepository()
+        requirement = Requirement.submit("The system shall do X.")
+        requirement.mark_analyzed()
+        requirement.validate()
+        repository.save(requirement.id, requirement)
+
+        gateway = _fake_ai_gateway(
+            AIAnalysis(quality_score=QualityScore.READY_FOR_VALIDATION)
+        )
+        use_case = AnalyseRequirementUseCase(repository, gateway)
+
+        with pytest.raises(InvalidStateTransitionError):
+            use_case.execute(requirement.id)
+
+        gateway.analyse.assert_not_called()

@@ -1,4 +1,4 @@
-"""Domain layer: the AIAnalysis entity and its QualityScore value object.
+"""Domain layer: the AIAnalysis value object and the QualityScore enumeration.
 
 Pure Python only -- no external imports, consistent with the Dependency
 Rules in architecture.md: the domain layer must remain independent of

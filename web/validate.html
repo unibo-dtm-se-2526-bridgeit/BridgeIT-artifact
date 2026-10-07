@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>BridgeIT — Business Analyst Review</title>
+    <title>BridgeIT — Requirements Engineer Review</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
@@ -36,7 +36,7 @@
             </nav>
         </header>
         <main class="panel">
-            <p class="eyebrow">Business Analyst Review &middot; FR-05</p>
+            <p class="eyebrow">Requirements Engineer Review &middot; FR-05</p>
             <div class="h1-row">
                 <h1>Record a validation decision</h1>
                 <button
@@ -50,7 +50,7 @@
             <div class="panel-description--collapsible" id="info-panel">
                 <div>
                     <p class="panel-description">
-                        This is where a Business Analyst's expertise and deep
+                        This is where a Requirements Engineer's expertise and deep
                         understanding of the business make all the difference —
                         Gemini's analysis is only ever a helpful starting point,
                         never a substitute for that judgment.
@@ -79,7 +79,7 @@
                     <button class="btn" type="submit" data-decision="approve">
                         Approve
                     </button>
-                    <button class="btn btn--secondary" type="submit" data-decision="edit">
+                    <button class="btn btn--secondary" type="button" id="edit-toggle" aria-controls="modified-text-field" aria-expanded="false">
                         Edit
                     </button>
                     <button class="btn btn--secondary" type="submit" data-decision="reject">
@@ -95,7 +95,10 @@
                         name="modified-text"
                         rows="3"
                         placeholder="Rewrite the requirement text here…"
-                    ></textarea>
+                    ></textarea><br />
+                    <button class="btn" type="submit" data-decision="edit">
+                        Save edited text
+                    </button>
                 </div>
             </form>
 

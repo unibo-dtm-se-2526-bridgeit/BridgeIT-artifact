@@ -23,11 +23,21 @@ function setStamp(state, label) {
     stampValueElement.textContent = label;
 }
 
-// Show the "edited text" field only once the user picks "Edit" -- keeps
-// the form simple for the two decisions that don't need it.
+// "Edit" only reveals the edited-text field: the decision is sent with the
+// separate "Save edited text" button, so no request is made with an empty
+// text. Approve/Reject hide the field again.
+const editToggle = document.getElementById("edit-toggle");
+editToggle.addEventListener("click", () => {
+    modifiedTextField.hidden = false;
+    editToggle.setAttribute("aria-expanded", "true");
+    modifiedTextInput.focus();
+});
 form.querySelectorAll("button[data-decision]").forEach((button) => {
     button.addEventListener("click", () => {
-        modifiedTextField.hidden = button.dataset.decision !== "edit";
+        if (button.dataset.decision !== "edit") {
+            modifiedTextField.hidden = true;
+            editToggle.setAttribute("aria-expanded", "false");
+        }
     });
 });
 
@@ -44,6 +54,11 @@ form.addEventListener("submit", async (event) => {
     const body = { decision };
     if (decision === "edit") {
         body.modified_text = modifiedTextInput.value.trim();
+        if (!body.modified_text) {
+            setStamp("error", "Write the edited text before saving.");
+            modifiedTextInput.focus();
+            return;
+        }
     }
 
     form.querySelectorAll("button[data-decision]").forEach((button) => {

@@ -10,4 +10,5 @@ htmlcov
 bridgeit.db
 tests
 web
-docs
+docsdata
+.env

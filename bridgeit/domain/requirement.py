@@ -52,8 +52,8 @@ class InvalidStateTransitionError(Exception):
 
 
 # The state machine described in domain-model.md -- Requirement (lifecycle
-# / state transitions): Submitted -> Analyzed -> Clarified -> Validated,
-# with Rejected reachable at the validation step.
+# / state transitions): Submitted -> Analyzed -> {Validated | Rejected |
+# Clarified}, with Clarified looping back to Analyzed.
 #
 # NOTE (design choice, since domain-model.md leaves this detail open):
 # clarifying a requirement always loops back to ANALYZED, since a
@@ -115,6 +115,20 @@ class Requirement:
                 f"Cannot move from {self._status.value} to {new_status.value}."
             )
         self._status = new_status
+
+    def ensure_can_be_analyzed(self) -> None:
+        """Raise InvalidStateTransitionError if an AI analysis is not
+        allowed in the current status (only Submitted and Clarified can be
+        analysed).
+
+        Lets callers check the lifecycle rule *before* doing expensive work
+        (e.g. calling the AI provider), without changing any state.
+        """
+        if RequirementStatus.ANALYZED not in _ALLOWED_TRANSITIONS[self._status]:
+            raise InvalidStateTransitionError(
+                f"Cannot move from {self._status.value} to "
+                f"{RequirementStatus.ANALYZED.value}."
+            )
 
     def mark_analyzed(self) -> None:
         """Record that an AI Analysis has been produced for this requirement (FR-02)."""

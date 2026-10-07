@@ -8,13 +8,10 @@ depend on both ports at once.
 
 from __future__ import annotations
 
+from bridgeit.application.errors import RequirementNotFoundError
 from bridgeit.application.ports.ai_gateway import AIGateway
 from bridgeit.application.ports.requirement_repository import RequirementRepository
 from bridgeit.domain.ai_analysis import AIAnalysis
-
-
-class RequirementNotFoundError(Exception):
-    """Raised when no Requirement exists with the given id."""
 
 
 class AnalyseRequirementUseCase:
@@ -31,12 +28,14 @@ class AnalyseRequirementUseCase:
         if requirement is None:
             raise RequirementNotFoundError(requirement_id)
 
+        # Check the lifecycle rule BEFORE calling the AI provider, so that an
+        # invalid request (e.g. analysing a Validated requirement) is
+        # rejected with InvalidStateTransitionError -> 409 without
+        # consuming any Gemini free-tier quota.
+        requirement.ensure_can_be_analyzed()
+
         analysis = self._ai_gateway.analyse(requirement.text.content)
 
-        # mark_analyzed() raises InvalidStateTransitionError (already
-        # defined on Requirement) if the requirement isn't in a state
-        # that allows analysis -- maps directly to the agreed
-        # "invalid_status_transition" -> 409 API error.
         requirement.mark_analyzed()
         self._repository.save(requirement_id, requirement)
         return analysis
