@@ -22,11 +22,11 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 from bridgeit.adapters.api.errors import ApiError
+from bridgeit.application.errors import RequirementNotFoundError
 from bridgeit.application.ports.ai_gateway import AIGateway, AIGatewayError
 from bridgeit.application.ports.requirement_repository import RequirementRepository
 from bridgeit.application.use_cases.analyse_requirement import (
     AnalyseRequirementUseCase,
-    RequirementNotFoundError,
 )
 from bridgeit.application.use_cases.validate_requirement import (
     InvalidValidationDecisionError,

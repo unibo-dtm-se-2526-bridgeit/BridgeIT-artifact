@@ -103,3 +103,11 @@ class TestRequirementInvalidTransitions:
 
         with pytest.raises(InvalidStateTransitionError):
             requirement.clarify("New text")
+
+    def test_ensure_can_be_analyzed_raises_once_validated(self) -> None:
+        requirement = Requirement.submit("The system shall do X.")
+        requirement.mark_analyzed()
+        requirement.validate()
+
+        with pytest.raises(InvalidStateTransitionError):
+            requirement.ensure_can_be_analyzed()

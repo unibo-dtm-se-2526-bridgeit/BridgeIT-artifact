@@ -3,5 +3,12 @@ services:
     build: .
     ports:
       - "8000:8000"
+    environment:
+      # Read from the host shell (or from a .env file next to this one).
+      # Only needed when an AI analysis is requested.
+      GEMINI_API_KEY: ${GEMINI_API_KEY:-}
+      BRIDGEIT_DB_PATH: /app/data/bridgeit.db
     volumes:
-      - ./bridgeit.db:/app/bridgeit.db
+      # A directory (not a single file) is mounted, so the database is
+      # created on first start and survives container restarts.
+      - ./data:/app/data

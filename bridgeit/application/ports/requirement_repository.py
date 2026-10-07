@@ -8,9 +8,10 @@ class RequirementRepository(ABC):
 
     This is an abstraction, not an implementation: the Application Layer
     depends on this contract, never on a concrete storage technology.
-    Concrete implementations (e.g. an in-memory fake for testing, or a
-    future SQLite adapter) live outside the application/domain layers and
-    implement this same interface.
+    Concrete implementations (SQLiteRequirementRepository in
+    infrastructure/persistence/, and an in-memory fake used by the tests)
+    live outside the application/domain layers and implement this same
+    interface.
     """
 
     @abstractmethod

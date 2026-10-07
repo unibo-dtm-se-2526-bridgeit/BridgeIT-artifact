@@ -1,6 +1,6 @@
 # BridgeIT — Domain Model
 
-**Status:** Current conceptual domain model, aligned with the implementation at release `bridgeit-v1.0.3`.
+**Status:** Current conceptual domain model, aligned with the implementation at the latest release (see `CHANGELOG.md`).
 
 This document describes the domain concepts that are currently implemented and distinguishes them from concepts that remain part of the planned future scope.
 

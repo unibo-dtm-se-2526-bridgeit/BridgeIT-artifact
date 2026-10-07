@@ -16,6 +16,8 @@ __pycache__/
 *$py.class
 .ruff_cache/
 bridgeit.db
+data/
+.env
 
 # C extensions
 *.so

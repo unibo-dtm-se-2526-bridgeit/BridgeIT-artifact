@@ -1,6 +1,6 @@
 # BridgeIT — Artifact Documentation Snapshot
 
-This file summarizes the **current state of the artifact** at release `bridgeit-v1.0.3`. The authoritative course report is maintained in the dedicated `report` repository; this document is kept here so that the artifact does not contain outdated implementation claims.
+This file summarizes the **current state of the artifact** at the latest release (see `CHANGELOG.md`). The authoritative course report is maintained in the dedicated `report` repository; this document is kept here so that the artifact does not contain outdated implementation claims.
 
 ---
 
@@ -8,7 +8,7 @@ This file summarizes the **current state of the artifact** at release `bridgeit-
 
 BridgeIT is a Requirements Engineering platform that supports the lifecycle of natural-language software requirements through AI-assisted quality analysis and explicit human validation.
 
-The system follows a **human-in-the-loop** principle: Google Gemini provides quality feedback, but the final authoritative decision remains under explicit Business Analyst control.
+The system follows a **human-in-the-loop** principle: Google Gemini provides quality feedback, but the final authoritative decision remains under explicit Requirements Engineer control.
 
 ---
 
@@ -133,7 +133,7 @@ No frontend framework or build system is used.
 
 ## Testing and Quality
 
-The repository contains **58 automated tests**, organized by domain, application, infrastructure, and API concerns.
+The repository contains **61 automated tests**, organized by domain, application, infrastructure, and API concerns.
 
 The configured quality tools are:
 
@@ -161,7 +161,7 @@ Release tags follow:
 bridgeit-v<version>
 ```
 
-The current version is `1.0.3`, with the latest tag `bridgeit-v1.0.3`.
+The current version is the one recorded in `pyproject.toml` and `CHANGELOG.md`, tagged as `bridgeit-v<version>`.
 
 The release configuration updates `pyproject.toml` and `CHANGELOG.md` and creates a GitHub Release. Public PyPI publication is conditional on the presence of `PYPI_TOKEN`.
 

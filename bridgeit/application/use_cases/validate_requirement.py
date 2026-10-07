@@ -8,14 +8,11 @@ an explicit human decision, can.
 
 from __future__ import annotations
 
+from bridgeit.application.errors import RequirementNotFoundError
 from bridgeit.application.ports.requirement_repository import RequirementRepository
 from bridgeit.domain.requirement import Requirement
 
 _ALLOWED_DECISIONS = {"approve", "edit", "reject"}
-
-
-class RequirementNotFoundError(Exception):
-    """Raised when no Requirement exists with the given id."""
 
 
 class InvalidValidationDecisionError(Exception):

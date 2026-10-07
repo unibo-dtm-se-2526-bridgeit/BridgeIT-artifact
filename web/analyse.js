@@ -39,7 +39,7 @@ function renderResult(qualityIndication, issues) {
     if (isReady) {
         resultHeading.textContent = "This requirement is ready for validation.";
         resultQuality.textContent =
-            "Gemini did not find anything blocking — a Business Analyst can now review it in the Validate page.";
+            "Gemini did not find anything blocking — a Requirements Engineer can now review it in the Validate page.";
         resultIssues.innerHTML = "";
         return;
     }
@@ -80,7 +80,7 @@ form.addEventListener("submit", async (event) => {
                 response.status === 404
                     ? "Requirement not found. Check the requirement id and try again."
                     : response.status === 409
-                      ? "This requirement cannot be analysed in its current status. Validated and Rejected requirements are final."
+                      ? "This requirement cannot be analysed in its current status. Only Submitted or Clarified requirements can be analysed (Validated and Rejected are final)."
                       : response.status === 400 || response.status === 422
                         ? "The request is incomplete or invalid. Check the entered data and try again."
                         : data && data.error && data.error.message

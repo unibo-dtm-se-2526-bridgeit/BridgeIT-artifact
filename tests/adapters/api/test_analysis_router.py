@@ -94,3 +94,13 @@ class TestValidateRoute:
 
         assert response.status_code == 409
         assert response.json()["error"]["code"] == "invalid_status_transition"
+
+    def test_returns_404_with_api_error_shape_when_requirement_missing(self) -> None:
+        client = _build_client(InMemoryRequirementRepository())
+
+        response = client.post(
+            "/requirements/does-not-exist/validate", json={"decision": "approve"}
+        )
+
+        assert response.status_code == 404
+        assert response.json()["error"]["code"] == "requirement_not_found"

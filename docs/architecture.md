@@ -1,6 +1,6 @@
 # BridgeIT — Architecture
 
-**Status:** Current implementation architecture — updated to reflect the artifact at release `bridgeit-v1.0.3`.
+**Status:** Current implementation architecture — updated to reflect the artifact at the latest release (see `CHANGELOG.md`).
 
 This document describes the architecture that is actually present in the repository. The final course report contains the broader project discussion; this file focuses on the implementation structure of the artifact.
 
@@ -77,7 +77,7 @@ bridgeit/
 │   ├── requirement.py
 │   └── ai_analysis.py
 ├── application/
-│   ├── dto.py
+│   ├── errors.py
 │   ├── ports/
 │   │   ├── ai_gateway.py
 │   │   └── requirement_repository.py
@@ -88,6 +88,7 @@ bridgeit/
 ├── adapters/
 │   └── api/
 │       ├── main.py
+│       ├── dto.py
 │       ├── analysis_router.py
 │       └── errors.py
 └── infrastructure/
@@ -296,7 +297,7 @@ The current release format is:
 
 `bridgeit-v<version>`
 
-The latest artifact release is `bridgeit-v1.0.3`.
+The latest artifact release is listed in `CHANGELOG.md` and on the GitHub Releases page.
 
 ---
 

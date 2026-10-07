@@ -7,7 +7,9 @@ class RequirementCreateRequest(BaseModel):
     This is a Data Transfer Object (DTO): it validates and shapes data
     coming from the HTTP boundary. It is intentionally distinct from the
     domain `Requirement` entity (see architecture.md — Dependency Rules):
-    the API must never expose domain objects directly.
+    the API must never expose domain objects directly. It lives in the
+    driving adapter (not in the application layer) because it depends on
+    Pydantic, an HTTP-boundary concern.
     """
 
     text: str = Field(
