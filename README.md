@@ -2,7 +2,7 @@
 
 ![Status](https://img.shields.io/badge/status-core%20workflow%20implemented-brightgreen)
 ![Python](https://img.shields.io/badge/python-3.10%2B-blue)
-![Release](https://img.shields.io/badge/release-bridgeit--v1.0.2-blue)
+![Release](https://img.shields.io/badge/release-bridgeit--v1.0.3-blue)
 ![License](https://img.shields.io/badge/license-Apache%202.0-lightgrey)
 
 > AI-Supported Requirements Engineering Platform — University of Bologna Software Engineering Project (A.Y. 2025/2026)
@@ -176,7 +176,7 @@ The following capabilities are outside the implemented core version and remain p
 - richer traceability-link management;
 - derived artifact generation.
 
-This prioritization reflects the scope implemented and validated to date. The team is awaiting instructor feedback on whether any additional capabilities should be included before final submission. See the report's [**Future Work**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/12-future/index.md) chapter for the documented extension opportunities.
+This prioritization reflects the scope implemented and validated in the current release. See the report's [**Future Work**](https://github.com/unibo-dtm-se-2526-bridgeit/report/blob/main/sections/12-future/index.md) chapter for the documented extension opportunities.
 
 ## Release
 
