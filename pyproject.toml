@@ -3,7 +3,7 @@ name = "bridgeit"
 packages = [
     { include = "bridgeit" },
 ]
-version = "1.0.4"
+version = "1.0.3"
 description = "AI-Supported Requirements Engineering Platform — Software Engineering project, University of Bologna"
 authors = [
     "Martina Fava <martina.fava3@studio.unibo.it>",
@@ -54,9 +54,7 @@ show_missing = true
 skip_covered = false
 
 [tool.pytest.ini_options]
-filterwarnings = [
-    "ignore::starlette.exceptions.StarletteDeprecationWarning",
-]
+addopts = "-ra"
 
 [build-system]
 requires = ["poetry-core"]
