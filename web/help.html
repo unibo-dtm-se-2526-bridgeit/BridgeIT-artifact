@@ -63,11 +63,12 @@
                     <div class="step-body">
                         <h2>Get a quick check from Gemini</h2>
                         <p>
-                            Copy the <code>id</code> you were given, paste it into
-                            <strong>Analyse</strong>, and ask for a quality check. Gemini
-                            either confirms it's ready, or tells you what's missing and
-                            why it matters — a first pass to help you improve it, never
-                            a verdict.
+                            After submission, BridgeIT gives the requirement a unique
+                            <code>id</code> and redirects you to <strong>Requirements</strong>.
+                            Use that same <code>id</code> on <strong>Analyse</strong> to request a
+                            quality check. Gemini either indicates that it is ready for
+                            validation, or tells you what needs clarification — a first
+                            pass to support improvement, never a final verdict.
                         </p>
                     </div>
                 </li>
@@ -126,9 +127,10 @@
                         <div>
                             <p>
                                 Read the list of reasons it gives — each one explains what's
-                                missing and why it matters, so you can either rewrite it
-                                yourself and submit a new one, or bring those specific points
-                                to the Business Analyst review on the Validate page.
+                                missing and why it matters. Use the <strong>Validate</strong> page
+                                to choose <strong>Edit</strong>, provide the revised wording, and
+                                move the requirement to <code>Clarified</code>. The same requirement
+                                id can then be analysed again with the updated text.
                             </p>
                         </div>
                     </div>
@@ -142,10 +144,11 @@
                     <div class="faq-answer" id="faq-3">
                         <div>
                             <p>
-                                No. Gemini only ever gives a quality check on the Analyse
-                                page — it never changes a requirement's status. Only an
-                                explicit decision on the Validate page (Approve, Edit, or
-                                Reject) does that.
+                                No. Gemini does not make the final human decision. The
+                                analysis operation moves an eligible requirement to
+                                <code>Analyzed</code>, but only an explicit decision on the
+                                Validate page (Approve, Edit, or Reject) can move it to
+                                <code>Validated</code>, <code>Clarified</code>, or <code>Rejected</code>.
                             </p>
                         </div>
                     </div>
@@ -160,8 +163,10 @@
                         <div>
                             <p>
                                 Your rewritten text replaces the original, and the
-                                requirement moves to a "Clarified" status, ready for another
-                                round of analysis or review with the updated wording.
+                                requirement moves to a <code>Clarified</code> status and keeps
+                                the same id. It can then be sent through <strong>Analyse</strong>
+                                again so that the revised wording is checked before another
+                                human validation decision.
                             </p>
                         </div>
                     </div>
