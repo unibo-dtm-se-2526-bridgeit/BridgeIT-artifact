@@ -15,7 +15,7 @@ from bridgeit.domain.ai_analysis import AIAnalysis
 
 
 class AnalyseRequirementUseCase:
-    """Use case backing POST /requirements/{id}/analyse."""
+    """Use case backing POST /api/v1/requirements/{id}/analyse."""
 
     def __init__(
         self, repository: RequirementRepository, ai_gateway: AIGateway

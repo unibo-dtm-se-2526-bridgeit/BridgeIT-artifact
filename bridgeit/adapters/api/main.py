@@ -7,13 +7,14 @@ from fastapi.middleware.cors import CORSMiddleware
 from bridgeit.adapters.api.analysis_router import register_analysis_routes
 from bridgeit.adapters.api.dto import RequirementCreateRequest, RequirementResponse
 from bridgeit.adapters.api.errors import ApiError, register_error_handlers
+from bridgeit.adapters.api.versioning import API_VERSION, API_V1_PREFIX
 from bridgeit.application.use_cases.submit_requirement import SubmitRequirementUseCase
 from bridgeit.infrastructure.ai.gemini_ai_gateway import GeminiAIGateway
 from bridgeit.infrastructure.persistence.sqlite_requirement_repository import (
     SQLiteRequirementRepository,
 )
 
-app = FastAPI(title="BridgeIT")
+app = FastAPI(title="BridgeIT", version=API_VERSION)
 register_error_handlers(app)
 
 # Allow the local frontend (served from a different origin than the API)
@@ -49,13 +50,24 @@ _ai_gateway = GeminiAIGateway()
 register_analysis_routes(app, repository=_repository, ai_gateway=_ai_gateway)
 
 
-@app.get("/health")
+@app.get(f"{API_V1_PREFIX}/health")
+@app.get("/health", include_in_schema=False)
 def health() -> dict[str, str]:
     """Health check endpoint: confirms the service is up and responding."""
     return {"status": "ok"}
 
 
-@app.post("/requirements", response_model=RequirementResponse, status_code=201)
+@app.post(
+    f"{API_V1_PREFIX}/requirements",
+    response_model=RequirementResponse,
+    status_code=201,
+)
+@app.post(
+    "/requirements",
+    response_model=RequirementResponse,
+    status_code=201,
+    include_in_schema=False,
+)
 def create_requirement(payload: RequirementCreateRequest) -> RequirementResponse:
     """Submit a new requirement (FR-01)."""
     # Built per-request (not once at module load) so this always uses
@@ -69,7 +81,15 @@ def create_requirement(payload: RequirementCreateRequest) -> RequirementResponse
     )
 
 
-@app.get("/requirements/{requirement_id}", response_model=RequirementResponse)
+@app.get(
+    f"{API_V1_PREFIX}/requirements/{{requirement_id}}",
+    response_model=RequirementResponse,
+)
+@app.get(
+    "/requirements/{requirement_id}",
+    response_model=RequirementResponse,
+    include_in_schema=False,
+)
 def get_requirement(requirement_id: str) -> RequirementResponse:
     """Retrieve a requirement by id."""
     requirement = _repository.get_by_id(requirement_id)

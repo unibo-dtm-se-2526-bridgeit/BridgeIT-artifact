@@ -80,12 +80,14 @@ This architecture keeps infrastructure dependencies outside the core domain and 
 
 The implemented core HTTP operations include:
 
-- `POST /requirements`
-- `GET /requirements/{requirement_id}`
-- `POST /requirements/{requirement_id}/analyse`
-- `POST /requirements/{requirement_id}/validate`
+- `POST /api/v1/requirements`
+- `GET /api/v1/requirements/{requirement_id}`
+- `POST /api/v1/requirements/{requirement_id}/analyse`
+- `POST /api/v1/requirements/{requirement_id}/validate`
 
 FastAPI also exposes automatically generated OpenAPI documentation while the backend is running.
+
+The public HTTP contract is explicitly versioned under `/api/v1`. A versioned OpenAPI snapshot is committed at [`openapi/v1/openapi.json`](openapi/v1/openapi.json). The previous unversioned routes are retained as backward-compatible aliases but are excluded from the public OpenAPI schema.
 
 ## AI Integration
 
