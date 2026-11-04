@@ -1,3 +1,14 @@
+## [1.1.0](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.5...bridgeit-v1.1.0) (2026-11-04)
+
+### Features
+
+* add versioned v1 API contract ([1514bbb](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/1514bbbd20702c43218622081f229343e25950b2))
+
+### Build and continuous integration
+
+* avoid duplicate branch and pull request runs ([301129c](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/301129c785c87ea7dc1d2466ce092375443849f8))
+* pin macOS tests to Intel runner ([fa7e0b7](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/commit/fa7e0b789d714f08ee9b289de9a7016649b138ea))
+
 ## [1.0.5](https://github.com/unibo-dtm-se-2526-bridgeit/BridgeIT-artifact/compare/bridgeit-v1.0.4...bridgeit-v1.0.5) (2026-10-07)
 
 ### Bug Fixes
