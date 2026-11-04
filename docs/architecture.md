@@ -174,7 +174,7 @@ Requirement
     +--> human validation decision
 ```
 
-Requirement retrieval through `GET /requirements/{id}` is currently implemented as a small API-level read operation directly against the repository instead of a dedicated application use case. This is intentionally lightweight but remains a possible future refactoring.
+Requirement retrieval through `GET /api/v1/requirements/{id}` is currently implemented as a small API-level read operation directly against the repository instead of a dedicated application use case. This is intentionally lightweight but remains a possible future refactoring.
 
 ---
 
@@ -229,18 +229,20 @@ The current HTTP API exposes these operations:
 
 | Method | Endpoint | Purpose |
 |---|---|---|
-| `GET` | `/health` | Check that the backend is running |
-| `POST` | `/requirements` | Create a requirement |
-| `GET` | `/requirements/{id}` | Retrieve a requirement |
-| `POST` | `/requirements/{id}/analyse` | Request an AI analysis |
-| `POST` | `/requirements/{id}/validate` | Record a human decision |
+| `GET` | `/api/v1/health` | Check that the backend is running |
+| `POST` | `/api/v1/requirements` | Create a requirement |
+| `GET` | `/api/v1/requirements/{id}` | Retrieve a requirement |
+| `POST` | `/api/v1/requirements/{id}/analyse` | Request an AI analysis |
+| `POST` | `/api/v1/requirements/{id}/validate` | Record a human decision |
 
 FastAPI also generates OpenAPI documentation automatically while the backend is running.
 
+The canonical API contract is versioned under `/api/v1`. Its generated OpenAPI specification is also stored in the repository at `openapi/v1/openapi.json`, with API metadata version `1.0.0`. The previous unversioned routes remain available as backward-compatible aliases, but they are excluded from the public OpenAPI schema.
+
 The following endpoints are **not implemented** in the current release:
 
-- `GET /requirements/{id}/traceability-links`
-- `POST /requirements/{id}/artifacts`
+- `GET /api/v1/requirements/{id}/traceability-links`
+- `POST /api/v1/requirements/{id}/artifacts`
 
 These correspond to the future Traceability and Derived Artifact capabilities discussed in the final report.
 

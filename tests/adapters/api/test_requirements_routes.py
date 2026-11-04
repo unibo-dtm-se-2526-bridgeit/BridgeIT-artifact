@@ -17,7 +17,9 @@ def client(tmp_path, monkeypatch):
 
 
 def test_create_requirement_returns_201_and_submitted_status(client) -> None:
-    response = client.post("/requirements", json={"text": "The system shall do X"})
+    response = client.post(
+        "/api/v1/requirements", json={"text": "The system shall do X"}
+    )
 
     assert response.status_code == 201
     body = response.json()
@@ -27,10 +29,12 @@ def test_create_requirement_returns_201_and_submitted_status(client) -> None:
 
 
 def test_get_requirement_returns_the_created_requirement(client) -> None:
-    create_response = client.post("/requirements", json={"text": "Another requirement"})
+    create_response = client.post(
+        "/api/v1/requirements", json={"text": "Another requirement"}
+    )
     requirement_id = create_response.json()["id"]
 
-    response = client.get(f"/requirements/{requirement_id}")
+    response = client.get(f"/api/v1/requirements/{requirement_id}")
 
     assert response.status_code == 200
     body = response.json()
@@ -40,7 +44,7 @@ def test_get_requirement_returns_the_created_requirement(client) -> None:
 
 
 def test_get_requirement_not_found_returns_structured_error(client) -> None:
-    response = client.get("/requirements/does-not-exist")
+    response = client.get("/api/v1/requirements/does-not-exist")
 
     assert response.status_code == 404
     assert response.json() == {

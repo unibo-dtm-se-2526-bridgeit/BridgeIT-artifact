@@ -35,7 +35,7 @@ class TestAnalyseRoute:
         repository.save(requirement.id, requirement)
         client = _build_client(repository)
 
-        response = client.post(f"/requirements/{requirement.id}/analyse")
+        response = client.post(f"/api/v1/requirements/{requirement.id}/analyse")
 
         assert response.status_code == 200
         body = response.json()
@@ -47,7 +47,7 @@ class TestAnalyseRoute:
         repository = InMemoryRequirementRepository()
         client = _build_client(repository)
 
-        response = client.post("/requirements/does-not-exist/analyse")
+        response = client.post("/api/v1/requirements/does-not-exist/analyse")
 
         assert response.status_code == 404
         assert response.json()["error"]["code"] == "requirement_not_found"
@@ -62,7 +62,8 @@ class TestValidateRoute:
         client = _build_client(repository)
 
         response = client.post(
-            f"/requirements/{requirement.id}/validate", json={"decision": "approve"}
+            f"/api/v1/requirements/{requirement.id}/validate",
+            json={"decision": "approve"},
         )
 
         assert response.status_code == 200
@@ -76,7 +77,7 @@ class TestValidateRoute:
         client = _build_client(repository)
 
         response = client.post(
-            f"/requirements/{requirement.id}/validate", json={"decision": "edit"}
+            f"/api/v1/requirements/{requirement.id}/validate", json={"decision": "edit"}
         )
 
         assert response.status_code == 400
@@ -89,7 +90,8 @@ class TestValidateRoute:
         client = _build_client(repository)
 
         response = client.post(
-            f"/requirements/{requirement.id}/validate", json={"decision": "approve"}
+            f"/api/v1/requirements/{requirement.id}/validate",
+            json={"decision": "approve"},
         )
 
         assert response.status_code == 409
@@ -99,7 +101,7 @@ class TestValidateRoute:
         client = _build_client(InMemoryRequirementRepository())
 
         response = client.post(
-            "/requirements/does-not-exist/validate", json={"decision": "approve"}
+            "/api/v1/requirements/does-not-exist/validate", json={"decision": "approve"}
         )
 
         assert response.status_code == 404

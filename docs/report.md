@@ -60,11 +60,11 @@ The current implementation covers the core requirements as follows:
 
 | Requirement | Current status | Implementation evidence |
 |---|---|---|
-| FR-01 Requirement Creation | Implemented | `POST /requirements`, `SubmitRequirementUseCase`, SQLite repository |
-| FR-02 AI-Assisted Requirement Analysis | Implemented | `POST /requirements/{id}/analyse`, `AIGateway`, `GeminiAIGateway` |
+| FR-01 Requirement Creation | Implemented | `POST /api/v1/requirements`, `SubmitRequirementUseCase`, SQLite repository |
+| FR-02 AI-Assisted Requirement Analysis | Implemented | `POST /api/v1/requirements/{id}/analyse`, `AIGateway`, `GeminiAIGateway` |
 | FR-03 Requirement Clarification | Implemented | `Requirement.clarify()`, `ValidateRequirementUseCase` with `edit` |
 | FR-04 Requirement Quality Evaluation | Implemented | `QualityScore`, Gemini analysis response |
-| FR-05 Human Validation | Implemented | `ValidateRequirementUseCase`, `POST /requirements/{id}/validate` |
+| FR-05 Human Validation | Implemented | `ValidateRequirementUseCase`, `POST /api/v1/requirements/{id}/validate` |
 | FR-06 Traceability Link Management | Not implemented | Planned future capability |
 | FR-07 Derived Artifact Creation | Not implemented | Planned future capability |
 
@@ -103,14 +103,14 @@ AI analyses are also not stored as independent database records.
 The implemented HTTP endpoints are:
 
 ```text
-GET  /health
-POST /requirements
-GET  /requirements/{id}
-POST /requirements/{id}/analyse
-POST /requirements/{id}/validate
+GET  /api/v1/health
+POST /api/v1/requirements
+GET  /api/v1/requirements/{id}
+POST /api/v1/requirements/{id}/analyse
+POST /api/v1/requirements/{id}/validate
 ```
 
-FastAPI provides generated OpenAPI documentation when the backend is running.
+FastAPI provides generated OpenAPI documentation when the backend is running. The canonical HTTP API is versioned under `/api/v1`, and the corresponding generated specification is versioned in the repository as `openapi/v1/openapi.json`. Legacy unversioned routes remain available for backward compatibility but are not part of the public OpenAPI contract.
 
 The Traceability and Derived Artifact endpoints are not implemented in the current release.
 
@@ -133,7 +133,7 @@ No frontend framework or build system is used.
 
 ## Testing and Quality
 
-The repository contains **61 automated tests**, organized by domain, application, infrastructure, and API concerns.
+The repository contains **63 automated tests**, organized by domain, application, infrastructure, and API concerns.
 
 The configured quality tools are:
 

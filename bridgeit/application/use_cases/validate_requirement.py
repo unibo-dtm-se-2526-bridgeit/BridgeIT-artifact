@@ -23,7 +23,7 @@ class InvalidValidationDecisionError(Exception):
 
 
 class ValidateRequirementUseCase:
-    """Use case backing POST /requirements/{id}/validate.
+    """Use case backing POST /api/v1/requirements/{id}/validate.
 
     Maps a human's validation decision to the corresponding Requirement
     lifecycle method, per the JSON contract agreed with @marthinaf03:

@@ -34,7 +34,7 @@ class AIAnalysis:
 
     Deliberately NOT persisted as its own aggregate at this stage: it is
     produced by the AI Gateway, used immediately to inform the
-    /requirements/{id}/analyse response and to move the Requirement to
+    /api/v1/requirements/{id}/analyse response and to move the Requirement to
     Analyzed, and is not queried on its own later. If a future
     requirement needs analysis history, this can be revisited -- see
     domain-model.md's note on modeling assumptions left open.

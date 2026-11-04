@@ -14,7 +14,7 @@ from bridgeit.domain.requirement import Requirement
 
 
 class SubmitRequirementUseCase:
-    """Use case backing POST /requirements."""
+    """Use case backing POST /api/v1/requirements."""
 
     def __init__(self, repository: RequirementRepository) -> None:
         self._repository = repository

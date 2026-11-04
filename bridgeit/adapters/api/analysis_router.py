@@ -10,7 +10,7 @@ case calls and use case results into HTTP responses, consistent with
 architecture.md -- Adapter Responsibilities.
 
 Uses the same shared ApiError from bridgeit.adapters.api.errors that
-GET /requirements/{id} already uses, so every endpoint's error response
+GET /api/v1/requirements/{id} already uses, so every endpoint's error response
 follows the same {"error": {"code", "message"}} shape.
 """
 
@@ -22,6 +22,7 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 
 from bridgeit.adapters.api.errors import ApiError
+from bridgeit.adapters.api.versioning import API_V1_PREFIX
 from bridgeit.application.errors import RequirementNotFoundError
 from bridgeit.application.ports.ai_gateway import AIGateway, AIGatewayError
 from bridgeit.application.ports.requirement_repository import RequirementRepository
@@ -59,7 +60,7 @@ class ValidateResponse(BaseModel):
 def register_analysis_routes(
     app: FastAPI, repository: RequirementRepository, ai_gateway: AIGateway
 ) -> None:
-    """Register /requirements/{id}/analyse and /validate on the given app.
+    """Register the canonical /api/v1 requirement analysis and validation routes.
 
     Mirrors the same "construct once, close over it" style already used
     in main.py for the repository -- consistent with the TEMPORARY note
@@ -71,8 +72,13 @@ def register_analysis_routes(
     validate_use_case = ValidateRequirementUseCase(repository)
 
     @app.post(
+        f"{API_V1_PREFIX}/requirements/{{requirement_id}}/analyse",
+        response_model=AnalysisResponse,
+    )
+    @app.post(
         "/requirements/{requirement_id}/analyse",
         response_model=AnalysisResponse,
+        include_in_schema=False,
     )
     def analyse_requirement(requirement_id: str) -> AnalysisResponse:
         """Request an AI-assisted analysis of a requirement (FR-02, FR-04)."""
@@ -103,8 +109,13 @@ def register_analysis_routes(
         )
 
     @app.post(
+        f"{API_V1_PREFIX}/requirements/{{requirement_id}}/validate",
+        response_model=ValidateResponse,
+    )
+    @app.post(
         "/requirements/{requirement_id}/validate",
         response_model=ValidateResponse,
+        include_in_schema=False,
     )
     def validate_requirement(
         requirement_id: str, body: ValidateRequest
